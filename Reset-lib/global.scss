@@ -1,0 +1,156 @@
+//$devio-width:;
+//清除浮动
+.clerfix {
+    &:after {
+        content: '';
+        height: 0;
+        width: 0;
+        display: block;
+        font-size: 0;
+        overflow: hidden;
+        visibility: hidden;
+        clear: both;
+    }
+}
+
+//按钮
+@mixin btn($y, $x) {
+    display: inline-block;
+    padding: $y $x;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #fff;
+    span {
+        padding: 0 3px;
+    }
+}
+
+//inline-block  兼容
+@mixin dib() {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+//文本超出部分隐藏
+@mixin ell() {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+//背景图
+@mixin bg-img($name, $tier) {
+    @if $tier==1 {
+        background: url("../../static/img/"+$name + ".png") no-repeat;
+    }
+    @else if($tier==2) {
+        background: url("../../../static/img/"+$name + ".png") no-repeat;
+    }
+    @else {
+        background: url("../../../../static/img/"+$name + ".png") no-repeat;
+    }
+    background-size: 100% 100%;
+}
+
+//背景图平铺
+@mixin repeat-img($name,
+$tier) {
+    @if $tier==1 {
+        background: url("../../static/img/"+$name + ".png");
+    }
+    @else if($tier==2) {
+        background: url("../../../static/img/"+$name + ".png");
+    }
+    @else {
+        background: url("../../../../static/img/"+$name + ".png");
+    }
+}
+
+//默认边框
+@mixin borders($border-color,
+$border-height) {
+    border: 1px solid $border-color;
+    border-top: 0;
+    border-right: 0;
+    position: relative;
+    &:before {
+        content: '';
+        display: block;
+        width: 1px;
+        height: $border-height;
+        background: $border-color;
+        position: absolute;
+        right: -1px;
+        top: 0;
+    }
+}
+
+//头部导航渐变
+@mixin nav-linner($color,
+$tocolor,
+$str,
+$tostr) {
+    background: $color;
+    background: -moz-linear-gradient(top, $color 0%, $tocolor 100%);
+    background: -webkit-linear-gradient(top, $color 0%, $tocolor 100%);
+    background: linear-gradient(to bottom, $color 0%, $tocolor 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr=$str, endColorstr=$tostr, GradientType=0);
+}
+
+//渐变线
+@mixin line-linner($color,
+$tocolor,
+$str,
+$tostr) {
+    background: $color;
+    background: -moz-linear-gradient(left, $color 0%, $tocolor 50%, $color 100%);
+    background: -webkit-linear-gradient(left, $color 0%, $tocolor 50%, $color 100%);
+    background: linear-gradient(to right, $color 0%, $tocolor 50%, $color 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr=$str, endColorstr=$tostr, GradientType=1);
+}
+
+//滚动条      argments; 1:宽度    2:高度    3:背景颜色    4:滑块颜色
+@mixin scroller($width,
+$height,
+$bg-color,
+$color) {
+    &::-webkit-scrollbar {
+        width: $width;
+        height: $height;
+        background-color: $color;
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: $bg-color;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        background-color: $color;
+    }
+}
+
+//input  placeholder
+@mixin placeholder($color) {
+    &::-webkit-input-placeholder,
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+    &:-moz-placeholder,
+    &:-moz-placeholder {
+        color: $color;
+    }
+    &::-moz-placeholder,
+    &::-moz-placeholder {
+        color: $color;
+    }
+    &:-ms-input-placeholder,
+    &:-ms-input-placeholder {
+        color: $color;
+    }
+}
+
+//媒体查询

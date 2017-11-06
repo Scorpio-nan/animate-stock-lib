@@ -153,4 +153,14 @@ $color) {
     }
 }
 
-//媒体查询
+// 四边形切角
+@mixin beveled-corners($bg,
+$tl:0,
+$tr:$tl,
+$br:$tl,
+$bl:$tr) {
+    background: $bg;
+    background: linear-gradient(135deg, transparent $tl, $bg 0) top left, linear-gradient(225deg, transparent $tr, $bg 0) top right, linear-gradient(-45deg, transparent $br, $bg 0) bottom right, linear-gradient(45deg, transparent $bl, $bg 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}

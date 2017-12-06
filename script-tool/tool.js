@@ -123,7 +123,7 @@ var tool = {
 	},
 
 	//判断两个数组是否相等  ，返回值 Boolean
-	arrayEqual：function(arr1,arr2){
+	arrayEqual:function(arr1,arr2){
 		if (arr1 === arr2) return true;
 	    if (arr1.length != arr2.length) return false;
 	    for (var i = 0; i < arr1.length; ++i) {
@@ -133,7 +133,7 @@ var tool = {
 	},
 
 	//深度拷贝，支持常见类型
-	deepClone：function(values){
+	deepClone:function(values){
 		var copy;
 	    // Handle the 3 simple types, and null or undefined
 	    if (null == values || "object" != typeof values) return values;
@@ -163,7 +163,7 @@ var tool = {
 	},
 
 	//将现金转换成大小写中文
-	digitUppercase：function(n){
+	digitUppercase:function(n){
 		var fraction = ['角', '分'];
 	    var digit = [
 	        '零', '壹', '贰', '叁', '肆',
@@ -230,7 +230,7 @@ var tool = {
 	},
 
 	//根据cookie名获取cookie
-	getCookie：function(name){
+	getCookie:function(name){
 		var arr = document.cookie.replace(/\s/g, "").split(';');
 	    for (var i = 0; i < arr.length; i++) {
 	        var tempArr = arr[i].split('=');
@@ -242,7 +242,7 @@ var tool = {
 	},
 
 	//获取浏览器类型和版本号
-	getExplore：function(){
+	getExplore:function(){
 		var sys = {},
 	        ua = navigator.userAgent.toLowerCase(),
 	        s;
@@ -383,7 +383,7 @@ var tool = {
 	},
 
 	//获取当前操作系统的类型
-	getOS：function(){
+	getOS:function(){
 		var userAgent = 'navigator' in window && 'userAgent' in navigator && navigator.userAgent.toLowerCase() || '';
 	    var vendor = 'navigator' in window && 'vendor' in navigator && navigator.vendor.toLowerCase() || '';
 	    var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
@@ -397,34 +397,34 @@ var tool = {
 	},
 
 	//邮箱格式验证    返回值boolean
-	isEmail：function(str){
+	isEmail:function(str){
 		return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str);
 	},
 
 	//判断对象是否是一个空的对象 返回值boolean
-	isEmptyObject：function(obj){
+	isEmptyObject:function(obj){
 		if (!obj || typeof obj !== 'object' || Array.isArray(obj))
 	        return false
 	    return !Object.keys(obj).length;
 	},
 
 	//判断省份证号是否正确  返回值boolean
-	isIdCard：function(str){
+	isIdCard:function(str){
 		return /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(str)
 	},
 
 	//判断当前号码是否是正确的手机号 返回值boolean
-	isPhoneNum：function(str){
+	isPhoneNum:function(str){
 		return /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test(str);
 	},
 
 	//判断该当前url地址是否正确
-	isUrl：function(str){
+	isUrl:function(str){
 		return /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i.test(str);
 	},
 
 	//获取当前元素距离文档(document)的位置
-	offset：function(ele){
+	offset:function(ele){
 		var pos = {
 	        left: 0,
 	        top: 0
@@ -438,7 +438,7 @@ var tool = {
 	},
 
 	//将url地址参数转换成对象
-	parseQueryString：function(url){
+	parseQueryString:function(url){
 		url = url == null ? window.location.href : url
 	    var search = url.substring(url.lastIndexOf('?') + 1)
 	    if (!search) {
@@ -448,34 +448,34 @@ var tool = {
 	},
 
 	//生成随机颜色
-	randomColor：function(){
+	randomColor:function(){
 		return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
 	},
 
 	//生成指定范围内的随机数
-	randomNum：function(min, max){
+	randomNum:function(min, max){
 		return Math.floor(Math.random() * (max-min+1) )+ min;
 	},
 
 	//设置cookie  键 值 过期时间
-	setCookie：function(name, value, days){
+	setCookie:function(name, value, days){
 		var date = new Date();
 	    date.setDate(date.getDate() + days);
 	    document.cookie = name + '=' + value + ';expires=' + date;
 	},
 
 	//删除cookie  依赖setCookie函数
-	removeCookie：function(name){
+	removeCookie:function(name){
 		setCookie(name, '1', -1);
 	},
 
 	//获取页面滚动条到顶部的距离
-	getScrollTop：function(){
+	getScrollTop:function(){
 		return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 	},
 
 	//设置滚动条顶部的距离
-	setScrollTop：function(value){
+	setScrollTop:function(value){
 		window.scrollTo(0, value);
     	return value;
 	},
@@ -504,7 +504,7 @@ var tool = {
 	},
 
 	//对象序列化
-	stringfyQueryString：function(obj){
+	stringfyQueryString:function(obj){
 		if (!obj) return '';
 	    var pairs = [];
 
@@ -545,7 +545,7 @@ var tool = {
 	},
 
 	//判断当前设备是手持设备还是客户端	 手持设备返回 0 ，客户端返回 1
-	browserRedirect：function(){
+	browserRedirect:function(){
 		var sUserAgent = navigator.userAgent.toLowerCase();
 		var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
 		var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
@@ -571,5 +571,4 @@ var requestAnimFrame = (function () {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
-
 

@@ -212,7 +212,7 @@ var tool = {
 	},
 
 	//格式化现在时间到设定的时间之间，相差多久  返回值 String
-	formatRemainTime:function(){
+	formatRemainTime:function(endTime){
 		var startDate = new Date(); //开始时间
 	    var endDate = new Date(endTime); //结束时间
 	    var t = endDate.getTime() - startDate.getTime(); //时间差

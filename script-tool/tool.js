@@ -559,7 +559,33 @@ var tool = {
 			return 1;
 		}
 		return 0;
-	}
+	},
+
+	//正则表达式替换		例：将<>, 替换
+	RepalaceStr:function(){
+		return text.replace(/[<>,]/g,function(match,pos,orgtext){
+			switch(match){
+				case '<':
+					return '(';
+				case '>':
+					return ')';
+				case ',':
+					return '，';
+			}
+		})
+	},
+
+	//最高效率求数组里面最大，最小值  传1取最大值，传0取最小值
+	MaxMinNum:function(arr,m){
+		if(m == 1){
+			return Math.max.apply(Math,arr);
+		}else{
+			return Math.min.apply(Math,arr);
+		}
+	},
+
+	
+	
 
 };
 

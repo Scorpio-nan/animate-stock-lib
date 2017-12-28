@@ -471,7 +471,14 @@ var tool = {
 
 	//获取页面滚动条到顶部的距离
 	getScrollTop:function(){
-		return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+		//return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+		var scrollPos;  
+        if (window.pageYOffset) {  
+        scrollPos = window.pageYOffset; }  
+        else if (document.compatMode && document.compatMode != 'BackCompat')  
+        { scrollPos = document.documentElement.scrollTop; }  
+        else if (document.body) { scrollPos = document.body.scrollTop; }   
+        return scrollPos;  
 	},
 
 	//设置滚动条顶部的距离

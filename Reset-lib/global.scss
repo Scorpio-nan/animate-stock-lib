@@ -185,13 +185,203 @@ $color) {
 }
 
 // 四边形切角
-@mixin beveled-corners($bg,
-$tl:0,
-$tr:$tl,
-$br:$tl,
-$bl:$tr) {
-    background: $bg;
-    background: linear-gradient(135deg, transparent $tl, $bg 0) top left, linear-gradient(225deg, transparent $tr, $bg 0) top right, linear-gradient(-45deg, transparent $br, $bg 0) bottom right, linear-gradient(45deg, transparent $bl, $bg 0) bottom left;
-    background-size: 50% 50%;
-    background-repeat: no-repeat;
+@mixin css-triangle ($direction: "down", $size: 20px, $color: #000, $fillColor:#fff) {
+    width: 0; 
+    height: 0;
+    position: relative;
+    z-index: 0;
+    border-left: #{setTriangleSize($direction, "left", $size)} solid #{setTriangleColor($direction, "left", $color)};
+    border-right: #{setTriangleSize($direction, "right", $size)} solid #{setTriangleColor($direction, "right", $color)};
+    border-bottom: #{setTriangleSize($direction, "bottom", $size)} solid #{setTriangleColor($direction, "bottom", $color)};
+    border-top: #{setTriangleSize($direction, "top", $size)} solid #{setTriangleColor($direction, "top", $color)};
+
+    .#{$namespace}triangle-fill{
+        width: 0; 
+        height: 0;
+        position: absolute;
+        left: -($size/2-1);
+        top:-($size);
+        z-index: 1;
+        border-left: #{setTriangleSize($direction, "left", $size)} solid #{setTriangleColor($direction, "left", $fillColor)};
+        border-right: #{setTriangleSize($direction, "right", $size)} solid #{setTriangleColor($direction, "right", $fillColor)};
+        border-bottom: #{setTriangleSize($direction, "bottom", $size)} solid #{setTriangleColor($direction, "bottom", $fillColor)};
+        border-top: #{setTriangleSize($direction, "top", $size)} solid #{setTriangleColor($direction, "top", $fillColor)};
+    }
 }
+@function setTriangleColor($direction, $side, $color) {
+
+    @if $direction == "left" and $side == "right" 
+    or  $direction == "right" and $side == "left" 
+    or $direction == "down" and $side == "top" 
+    or $direction == "up" and $side == "bottom" {
+        @return $color
+    } @else {
+        @return "transparent";
+    }
+}
+@function setTriangleSize($direction, $side, $size){
+    @if (($direction == "left" or $direction == "right") and ($side=="left" or $side=="right"))
+        or (($direction == "up" or $direction == "down") and ($side=="top" or $side=="bottom")){
+        @return $size/2;
+    } @else{
+        @return $size;
+    }
+}
+
+@function setTriangleOffset($direction, $side, $size){
+    @if (($direction == "left" or $direction == "right") and ($side=="left" or $side=="right"))
+        or (($direction == "up" or $direction == "down") and ($side=="top" or $side=="bottom")){
+        @return $size/2;
+    } @else{
+        @return $size;
+    }
+}
+
+
+//不可点击元素1像素边框
+@mixin border1px($bc:#000, $side: all, $br: 0, $bs: solid) {
+    position: relative;
+    &:after {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        @if $side==all {
+            border: 1px $bs $bc;
+        }
+        @else {
+            $size: length($side);
+            @for $i from 1 through $size {
+                border-#{nth($side, $i)}: 1px $bs $bc;
+            }
+        }
+        point-events:none;
+    }
+    @media (min--moz-device-pixel-ratio: 1.5),
+    (-webkit-min-device-pixel-ratio: 1.5),
+    (min-device-pixel-ratio: 1.5),
+    (min-resolution: 144dpi),
+    (min-resolution: 1.5dppx),
+    (-ms-high-contrast:active),
+    (-ms-high-contrast:none) {
+        &:after {
+            width: 200%;
+            height: 200%;
+            transform: scale(.5);
+            transform-origin: 0 0;
+            border-radius: #{$br*2}px;
+        }
+    }
+    @media (-webkit-device-pixel-ratio: 1.5) {
+        // 解决1.5屏幕下某些边框不显式问题，小数位多写几位
+        &:after {
+            width: 150%;
+            height: 150%;
+            transform: scale(.6666);
+            transform-origin: 0 0;
+            border-radius: #{$br*1.5}px;
+        }
+    }
+    @media (-webkit-device-pixel-ratio: 3) {
+        &:after {
+            width: 300%;
+            height: 300%;
+            transform: scale(.3333);
+            transform-origin: 0 0;
+            border-radius: #{$br*3}px;
+        }
+    }
+}
+
+//可点击元素1像素边框
+@mixin border-1px($bc:#000, $side: all){
+      position: relative;
+    &:after {
+        position: absolute;
+        content: "";
+        box-sizing: border-box;
+        background: $bc;
+        @if $side == left{
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            transform: scaleX(0.5);
+        }@else if $side == right{
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            transform: scaleX(0.5);
+        }@else if $side == top{
+            right: 0;
+            top: 0;
+            height:1px;
+            width: 100%;
+            transform: scaleY(0.5);
+        }@else{
+            right: 0;
+            bottom: 0;
+            height:1px;
+            width: 100%;
+            transform: scaleY(0.5);
+        }
+    }
+}
+
+
+//input placehoder默认颜色
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder{
+    color: $assistFontColor;
+}
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    color: $assistFontColor;
+}
+input::-moz-placeholder, 
+textarea::-moz-placeholder {
+    color: $assistFontColor;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    color: $assistFontColor;
+}
+
+//css画三角形
+@mixin arrow($direction,
+$size,
+$color) {
+    width: 0;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+    overflow: hidden;
+    border-width: $size;
+    cursor: pointer;
+    @if $direction == top {
+        border-style: dashed dashed solid dashed;
+        border-color: transparent transparent $color transparent;
+        border-top: none;
+    }
+    @else if $direction == bottom {
+        border-style: solid dashed dashed dashed;
+        border-color: $color transparent transparent transparent;
+        border-bottom: none;
+    }
+    @else if $direction == right {
+        border-style: dashed dashed dashed solid;
+        border-color: transparent transparent transparent $color;
+        border-right: none;
+    }
+    @else if $direction == left {
+        border-style: dashed solid dashed dashed;
+        border-color: transparent $color transparent transparent;
+        border-left: none;
+    }
+}
+
+

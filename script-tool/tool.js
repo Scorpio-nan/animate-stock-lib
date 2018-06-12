@@ -592,7 +592,6 @@ var tool = {
 			return Math.min.apply(Math, arr);
 		}
 	},
-
 	//随机生成数字和字母的组合
 	randomWord: function(randomFlag, min, max) {
 		var str = "",
@@ -609,8 +608,7 @@ var tool = {
 		return str;
 	},
 	//获取本周，上周，本月，上月时间   依赖makedate（）
-	querySubmit() {
-		var this_ = this;
+	querySubmit(timer) {
 		var Today = new Date();
 		var weekday = new Date();
 		var lastweekstart = new Date();
@@ -627,29 +625,34 @@ var tool = {
 		lastmonthstart.setDate(1); //上月第一天
 		lastmonthend.setDate(monthstart.getDate() - 1); //上月最后一天
 
-
 		var start_date = new Date();
 		var end_date = new Date();
-		switch (this_.subselect) {
+		switch (timer) {
 			case 0:
-				start_date = this_.makedate(Today);
-				end_date = this_.makedate(Today);
+				start_date = makedate(Today);
+				end_date = makedate(Today);
 				break;
 			case 1:
-				start_date = this_.makedate(lastweekend);
-				end_date = this_.makedate(Today);
+				start_date = makedate(lastweekend);
+				end_date = makedate(Today);
 				break;
 			case 2:
-				start_date = this_.makedate(lastweekstart);
-				end_date = this_.makedate(lastweekend);
+				start_date = makedate(lastweekstart);
+				end_date = makedate(lastweekend);
 				break;
 			case 3:
-				start_date = this_.makedate(monthstart);
-				end_date = this_.makedate(Today);
+				start_date = makedate(monthstart);
+				end_date = makedate(Today);
+				break;
+			case 4:
+				start_date = this.makedate(lastmonthstart);
+				end_date = this.makedate(lastmonthend);
 				break;
 		};
-		this.init(start_date, end_date)
-		//this.init(this.queryID, start_date, end_date)
+		return {
+			start: start_date,
+			end: end_date
+		}
 	},
 	makedate(vals) {
 		var val = new Date(vals);
@@ -667,59 +670,136 @@ var tool = {
 
 	//数字的排列组合  从 m 中获取 n 的组合
 	getFlagArrs(m, n) {
-
 		if (!n || n < 1) {
 			return [];
 		}
 		var resultArrs = [],
-
 			flagArr = [],
-
 			isEnd = false,
-
 			i, j, leftCnt;
-
 		for (i = 0; i < m; i++) {
 			flagArr[i] = i < n ? 1 : 0;
 		}
 		resultArrs.push(flagArr.concat());
-
 		while (!isEnd) {
-
 			leftCnt = 0;
-
 			for (i = 0; i < m - 1; i++) {
-
 				if (flagArr[i] == 1 && flagArr[i + 1] == 0) {
-
 					for (j = 0; j < i; j++) {
-
 						flagArr[j] = j < leftCnt ? 1 : 0;
-
 					}
 					flagArr[i] = 0;
-
 					flagArr[i + 1] = 1;
-
 					var aTmp = flagArr.concat();
-
 					resultArrs.push(aTmp);
-
 					if (aTmp.slice(-n).join("").indexOf('0') == -1) {
-
 						isEnd = true;
-
 					}
 					break;
 				}
-
 				flagArr[i] == 1 && leftCnt++;
 			}
 		}
 		return resultArrs;
 	},
+	//从 m 中 获取 n 的组合
+	arrayCombine(callback, itemNum, targetArr) {
+		if (!targetArr || !targetArr.length) {
+			return [];
+		}
+		var len = targetArr.length;
+		var resultArrs = [];
+		if (len == itemNum) {
+			resultArrs.push(targetArr);
+			return callback(resultArrs);
+		} else if (len < itemNum) {
+			return callback(resultArrs);
+		}
+		var flagArrs = this.getFlagArrs(len, itemNum);
+		while (flagArrs.length) {
+			var flagArr = flagArrs.shift();
+			var combArr = [];
+			for (var i = 0; i < len; i++) {
+				flagArr[i] && combArr.push(targetArr[i]);
+			}
+			resultArrs.push(combArr);
+		}
+		callback(resultArrs);
+	},
+	//将秒数转换成日期格式   （开奖时间）
+	myTimeStamp: function(second_time) {
 
-	
+		var time = parseInt(second_time);
+		var second = parseInt(second_time) % 60;
+		var min = parseInt(second_time / 60);
+
+		if (second < 10) {
+			second = '0' + second;
+		}
+		if (min >= 10) {
+			min = min % 60;
+			time = min + ":" + second + "";
+			var hour = parseInt(parseInt(second_time / 60 / 60));
+		} else {
+			time = '0' + min + ":" + second + "";
+		}
+
+		if (hour > 0) {
+			hour = hour % 24
+			time = hour + "时:" + min + ":" + second;
+			var day = parseInt(parseInt(parseInt(second_time / 60) / 60) / 24);
+		}
+		if (day > 0) {
+			time = day + "天" + hour + "时" + min + "分" + second + "";
+		}
+		return time;
+	},
+
+	// 复制粘贴   **  仅兼容IE和FF
+	copyToClipboard: function(txt) {
+		if (window.clipboardData) { //IE
+			window.clipboardData.clearData();
+			window.clipboardData.setData("Text", txt);
+			if (window.clipboardData.getData("Text") == txt) {
+				$.alert("复制成功！按 Ctrl+V 组合键进行粘贴。");
+			} else {
+				$.alert("复制失败！请设置允许访问剪贴板。");
+			}
+		} else if (navigator.userAgent.indexOf("Opera") != -1) {
+			$.alert('复制功能暂不支持Opera');
+		} else if (navigator.userAgent.indexOf("Firefox") != -1) { //FF
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			} catch (e) {
+				$.alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");
+			}
+			var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+			if (!clip)
+				return;
+			var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+			if (!trans)
+				return;
+			trans.addDataFlavor('text/unicode');
+			var str = new Object();
+			var len = new Object();
+			var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+			var copytext = txt;
+			str.data = copytext;
+			trans.setTransferData("text/unicode", str, copytext.length * 2);
+			var clipid = Components.interfaces.nsIClipboard;
+			if (!clip)
+				return false;
+			clip.setData(trans, null, clipid.kGlobalClipboard);
+			$.alert("复制成功！按 Ctrl+V 组合键进行粘贴。")
+		} else if (navigator.userAgent.indexOf("Chrome") != -1) { //chrome
+			$.alert('复制功能暂不支持chrome');
+		}
+	},
+
+	//判断当前手持设备是否是爱疯叉
+	isIphoneX:function() {
+		return /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)
+	}
 
 
 };

@@ -797,8 +797,16 @@ var tool = {
 	},
 
 	//判断当前手持设备是否是爱疯叉
-	isIphoneX:function() {
+	isIphoneX: function() {
 		return /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)
+	},
+
+	//判断两个时间之间相差的天数    需要先把时间转换成  2018-06-23 00:00:00  (dataFormat库)
+	daysBetween(sDate1, sDate2) {
+		var time1 = Date.parse(new Date(sDate1));
+		var time2 = Date.parse(new Date(sDate2));
+		var nDays = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
+		return nDays;
 	}
 
 

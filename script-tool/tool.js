@@ -755,47 +755,6 @@ var tool = {
 		return time;
 	},
 
-	// 复制粘贴   **  仅兼容IE和FF
-	copyToClipboard: function(txt) {
-		if (window.clipboardData) { //IE
-			window.clipboardData.clearData();
-			window.clipboardData.setData("Text", txt);
-			if (window.clipboardData.getData("Text") == txt) {
-				$.alert("复制成功！按 Ctrl+V 组合键进行粘贴。");
-			} else {
-				$.alert("复制失败！请设置允许访问剪贴板。");
-			}
-		} else if (navigator.userAgent.indexOf("Opera") != -1) {
-			$.alert('复制功能暂不支持Opera');
-		} else if (navigator.userAgent.indexOf("Firefox") != -1) { //FF
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			} catch (e) {
-				$.alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");
-			}
-			var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
-			if (!clip)
-				return;
-			var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
-			if (!trans)
-				return;
-			trans.addDataFlavor('text/unicode');
-			var str = new Object();
-			var len = new Object();
-			var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-			var copytext = txt;
-			str.data = copytext;
-			trans.setTransferData("text/unicode", str, copytext.length * 2);
-			var clipid = Components.interfaces.nsIClipboard;
-			if (!clip)
-				return false;
-			clip.setData(trans, null, clipid.kGlobalClipboard);
-			$.alert("复制成功！按 Ctrl+V 组合键进行粘贴。")
-		} else if (navigator.userAgent.indexOf("Chrome") != -1) { //chrome
-			$.alert('复制功能暂不支持chrome');
-		}
-	},
-
 	//判断当前手持设备是否是爱疯叉
 	isIphoneX: function() {
 		return /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)
@@ -807,6 +766,215 @@ var tool = {
 		var time2 = Date.parse(new Date(sDate2));
 		var nDays = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
 		return nDays;
+	},
+
+	//随机生成多少位的字符串，用于制作token
+	randomString: function(len) {　　
+		len = len || 32;　　
+		var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';　　
+		var maxPos = $chars.length;　　
+		var pwd = '';　　
+		for (i = 0; i < len; i++) {
+			//0~32的整数
+			　　　　
+			pwd += $chars.charAt(Math.floor(Math.random() * (maxPos + 1)));　　
+		}　　
+		return pwd;
+	},
+
+	//随机创建三原色里面的颜色   比上面创建的颜色靓丽   https://zhuanlan.zhihu.com/p/28257724
+	randomColors: function() {
+
+	},
+
+	//将html转换成字符串格式   (前后端传值时需要)
+	htmlEncodeByRegExp: function(str) {
+		var s = "";
+		if (str.length == 0) return "";
+		s = str.replace(/&/g, "&amp;");
+		s = s.replace(/</g, "&lt;");
+		s = s.replace(/>/g, "&gt;");
+		s = s.replace(/ /g, "&nbsp;");
+		s = s.replace(/\'/g, "&#39;");
+		s = s.replace(/\"/g, "&quot;");
+		return s;
+	},
+
+	//将字符串解码成html格式
+	htmlDecodeByRegExp: function(str) {
+		var s = "";
+		if (str.length == 0) return "";
+		s = str.replace(/&amp;/g, "&");
+		s = s.replace(/&lt;/g, "<");
+		s = s.replace(/&gt;/g, ">");
+		s = s.replace(/&nbsp;/g, " ");
+		s = s.replace(/&#39;/g, "\'");
+		s = s.replace(/&quot;/g, "\"");
+		return s;
+	},
+
+	//将多维数组转换成一维数组    
+	unid: function(arr) {
+		var arr1 = (arr + '').split(','); //将数组转字符串后再以逗号分隔转为数组
+		var arr2 = arr1.map(function(x) {
+			return Number(x);
+		});
+		return arr2;
+	},
+	/*
+	 * @ele  监听对象 
+	 * @type 事件名称
+	 * @handle回调函数
+	 */
+	addHandler: function(ele, type, handler) {
+		if (ele.addEventListener) {
+			ele.addEventListener(type, handler)
+		} else if (ele.attachEvent) {
+			ele.attachEvent('on' + type, handler)
+		} else {
+			ele['on' + type]
+		}
+	},
+	//移除事件监听
+	removeHandler: function(ele, type, handler) {
+		if (ele.removeEventListener) {
+			ele.removeEventListener(type, handler)
+		} else if (ele.attachEvent) {
+			ele.detachEvent('on' + type, handler)
+		} else {
+			ele['on' + type]
+		}
+	},
+	//响应式字体大小    依赖fontAdapt函数     750设计稿  1rem = 100px
+	getFontSize: function() {
+		var doc = document,
+			win = window;
+		var docEl = doc.documentElement,
+			resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+			recalc = function() {
+				var clientWidth = docEl.clientWidth;
+				if (!clientWidth) return;
+				//如果屏幕大于750（750是根据我效果图设置的，具体数值参考效果图），就设置clientWidth=750，防止font-size会超过100px
+				if (clientWidth > 750) {
+					clientWidth = 750
+				}
+				//设置根元素font-size大小
+				docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+			};
+		//屏幕大小改变，或者横竖屏切换时，触发函数
+		win.addEventListener(resizeEvt, recalc, false);
+		//文档加载完成时，触发函数
+		doc.addEventListener('DOMContentLoaded', recalc, false);
+	},
+
+	//将数组里面的2进制数转换成10进制
+	binaryArrayToNumber: function(arr) {
+		var str = arr.join('');
+		str.toString(2);
+		return parseInt(str, 2);
+	},
+
+	//求一个数组里面的所有数的最小公倍数
+	smallestCommons: function(arr) {
+		//判断是否为质数
+		var isPrime = function(n) {
+			for (var i = 2; i < n; i++) {
+				if (n % i === 0) return false;
+			}
+			return true;
+		};
+		//分解为质因数
+		var getPrime = function(n) {
+			var result = [],
+				primes = [];
+			for (var i = 2; i <= n; i++) {
+				if (isPrime(i)) primes.push(i);
+			}
+			while (!isPrime(n)) {
+				for (i = 0; i < primes.length; i++) {
+					if (n % primes[i] === 0) {
+						n = n / primes[i];
+						result.push(primes[i]);
+						break;
+					}
+				}
+			}
+			result.push(n);
+			return result;
+		};
+
+		var primes = [];
+		var begin = Math.min(arr[0], arr[1]);
+		var end = Math.max(arr[0], arr[1]);
+		//提取每个数的质因数
+		for (var i = begin; i < end + 1; i++) {
+			primes.push(getPrime(i));
+		}
+
+		//找出公共质因数
+		var public_primes = [];
+		for (i = 0; i < primes.length; i++) {
+			for (var j = 0; j < primes[i].length; j++) {
+				public_primes.push(primes[i][j]);
+				//将之后数组中的相同质因数删除
+				for (var k = i + 1; k < primes.length; k++) {
+					if (primes[k].indexOf(primes[i][j]) !== -1) {
+						primes[k].splice(primes[k].indexOf(primes[i][j]), 1);
+					}
+				}
+			}
+		}
+		var result = 1;
+		for (i = 0; i < public_primes.length; i++) {
+			result *= public_primes[i];
+		}
+		return result;
+	},
+
+	//判断一个数被开方之后是整数还是小数   整数true，小数false
+	isSquare: function(n) {
+		if (n < 0) return false;
+		return Math.sqrt(n).toString().indexOf('.') < 0;
+	},
+
+	//将阿拉伯数字替换成罗马数字显示
+	convert: function(num) {
+		var a = [
+			["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
+			["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"],
+			["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"],
+			["", "M", "MM", "MMM"]
+		];
+		var i = a[3][Math.floor(num / 1000)];
+		var j = a[2][Math.floor(num % 1000 / 100)];
+		var k = a[1][Math.floor(num % 100 / 10)];
+		var l = a[0][num % 10];
+		return i + j + k + l;
+	},
+
+	//JS防抖功能  scroll，resize等高频繁操作的时候
+	/*
+	 *	@func  function 监听事件的回调
+	 *	@wait	 number	多久触发一次
+	 *	@inmmediate		boolean	是否是及时触发
+	 * eg:document.addEventLinster('scroll',debounce(function(){},1000,true),false);
+	 */
+	debounce(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this,
+				args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			if (!timeout) {
+				clearTimeout(timeout);
+				timeout = setTimeout(later, wait);
+			}
+			if (callNow) func.apply(context, args);
+		};
 	}
 
 

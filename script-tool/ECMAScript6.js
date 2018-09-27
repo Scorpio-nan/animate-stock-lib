@@ -31,7 +31,6 @@ const lib = {
 
 	//随机化数组顺序     shuffle([1,2,3]) -> [2,3,1]
 	shuffle: arr => arr.sort(() => Math.random() - 0.5),
-
 	//按照字母顺序排列		sortCharactersInString('cabbage') -> 'aabbceg'
 	sortCharactersInString: str => str.split('').sort((a, b) => a.localeCompare(b)).join(''),
 

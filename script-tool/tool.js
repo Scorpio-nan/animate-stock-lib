@@ -26,13 +26,12 @@ var tool = {
 
 	//获取几天前的日期
 	getDateBefore: function(n) {
-		var uom = new Date(new Date() - 0 - n * 86400000);
-		if (uom.getDate() >= 0 && uom.getDate() <= 9) {
-			uom = uom.getFullYear() + "-" + (uom.getMonth() + 1) + "-0" + uom.getDate();
-		} else {
-			uom = uom.getFullYear() + "-" + (uom.getMonth() + 1) + "-" + uom.getDate();
-		}
-		return uom;
+		var dd = new Date();  
+	    dd.setDate(dd.getDate()+n);
+	    var y = dd.getFullYear();  
+	    var m = (dd.getMonth()+1)<10 ? ('0'+(dd.getMonth()+1)) : (dd.getMonth()+1);  
+	    var d = dd.getDate() <10 ? ('0'+ dd.getDate()) :dd.getDate();  
+	    return y+"-"+m+"-"+d;
 	},
 
 	//获取当前时间
@@ -757,7 +756,13 @@ var tool = {
 
 	//判断当前手持设备是否是爱疯叉
 	isIphoneX: function() {
-		return /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)
+		if((/iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)) ||
+		   (/iphone/gi.test(navigator.userAgent) && (screen.height == 896 && screen.width == 414)) ||
+		   (/iphone/gi.test(navigator.userAgent) && (Math.floor(screen.height/screen.width*100) == 216))
+		){
+			return true;
+		}
+		return false;
 	},
 
 	//判断两个时间之间相差的天数    需要先把时间转换成  2018-06-23 00:00:00  (dataFormat库)

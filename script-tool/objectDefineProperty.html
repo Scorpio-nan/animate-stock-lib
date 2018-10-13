@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<button onclick="setPrice()">获取价格</button>
+		<button onclick="setNum()">获取数量</button>
+		<script type="text/javascript">
+			/*let obj = {
+				num:10,
+				str:'Hello Word'
+			}
+			let currentVal = obj.num;
+			Object.defineProperty(obj,'num',{
+				get(){
+					console.log('触发get函数！')
+				},
+				set(nVal){
+					console.log('触发set函数！')
+				}
+			})
+			
+			function getValue(){
+				obj.num
+			}
+			
+			function setValue(){
+				obj.num = 20;
+			}*/
+			
+			let data = {price:20,quantity:2};
+			let terget = null;
+			
+			class Dep{
+				constructor(){
+					this.subscribers = [];
+				}
+				depend(){
+					if(target && !this.subscribers.includes(target)){
+						this.subscribers.push(target);
+					}
+				}
+				notify(){
+					this.subscribers.forEach(sub => sub())
+				}
+			}
+			
+			Object.keys(data).forEach(keys =>{
+				let intervalValue = data[keys];
+				
+				const dep = new Dep();
+				Object.defineProperty(data,keys,{
+					get(){
+						dep.depend();
+						return intervalValue;
+					},
+					set(newVal){
+						intervalValue = newVal;
+						dep.notify();
+					}
+				})
+			})
+			
+			function watcher(Fun){
+				target = Fun;
+				target();
+				target = null;
+			}
+			
+			watcher(()=>{
+				data.total = data.price * data.quantity;
+				console.log(data.total);
+			})
+			
+			
+			function setPrice(){
+				data.price += 10;
+			}
+			
+			function setNum(){
+				data.quantity = Math.round(10,100);
+			}
+			
+			
+			
+		</script>
+	</body>
+</html>

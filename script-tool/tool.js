@@ -192,7 +192,7 @@ var tool = {
 			.replace(/(零.)+/g, '零')
 			.replace(/^整$/, '零元整');
 	},
-
+	
 	//格式化开始时间到当前时间已过多久   返回值String
 	formatPassTime: function(startTime) {
 		var currentTime = Date.parse(new Date()),
@@ -409,14 +409,17 @@ var tool = {
 
 	//判断省份证号是否正确  返回值boolean
 	isIdCard: function(str) {
-		return /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(str)
+		return /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(str);
 	},
 
 	//判断当前号码是否是正确的手机号 返回值boolean
 	isPhoneNum: function(str) {
 		return /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test(str);
 	},
-
+	//匹配国际电话号码
+	phoneCheck:function(str){
+		return /\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/.test(str);
+	},
 	//判断该当前url地址是否正确
 	isUrl: function(str) {
 		return /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i.test(str);
@@ -964,7 +967,7 @@ var tool = {
 	 *	@inmmediate		boolean	是否是及时触发
 	 * eg:document.addEventLinster('scroll',debounce(function(){},1000,true),false);
 	 */
-	debounce(func, wait, immediate) {
+	debounce:function(func, wait, immediate) {
 		var timeout;
 		return function() {
 			var context = this,
@@ -980,6 +983,16 @@ var tool = {
 			}
 			if (callNow) func.apply(context, args);
 		};
+	},
+	
+	//银行卡序列化    4位一个空格
+	bankCardSerialization:function(str){
+		return str.replace(/\s/g, '').replace(/(.{4})/g, "$1 ");
+	},
+	
+	//银行卡只显示后4位 
+	bankCardRef:function(str){
+		return str.replace(/\s/g,'').replace(/(\d{4})\d+(\d{4})$/, "**** **** **** $2");
 	}
 
 

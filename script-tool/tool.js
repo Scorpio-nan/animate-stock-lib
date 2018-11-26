@@ -993,6 +993,58 @@ var tool = {
 	//银行卡只显示后4位 
 	bankCardRef:function(str){
 		return str.replace(/\s/g,'').replace(/(\d{4})\d+(\d{4})$/, "**** **** **** $2");
+	},
+	
+	/*
+	* APP版本更新对比
+	* ov  旧版本  string  1.0.0
+	* nv  新版本  string  2.5.0
+	* return      boolean
+	**/
+	compareVersion:function (ov, nv) {
+		if(!ov || !nv || ov == "" || nv == "") {
+			return false;
+		}
+		var b = false,
+			ova = ov.split(".", 4),
+			nva = nv.split(".", 4);
+		for(var i = 0; i < ova.length && i < nva.length; i++) {
+			var so = ova[i],
+				no = parseInt(so),
+				sn = nva[i],
+				nn = parseInt(sn);
+			if(nn > no || sn.length > so.length) {
+				return true;
+			} else if(nn < no) {
+				return false;
+			}
+		}
+		if(nva.length > ova.length && 0 == nv.indexOf(ov)) {
+			return true;
+		}
+	},
+	
+	// 获取当前网页的信息
+	getClientInfo:function(){
+		var s = "";
+		s += " 网页可见区域宽："+ document.body.clientWidth;
+		s += "\n 网页可见区域高："+ document.body.clientHeight;
+		s += "\n 网页可见区域宽："+ document.body.offsetWidth + " (包括边线和滚动条的宽)";
+		s += "\n 网页可见区域高："+ document.body.offsetHeight + " (包括边线的宽)";
+		s += "\n 网页正文全文宽："+ document.body.scrollWidth;
+		s += "\n 网页正文全文高："+ document.body.scrollHeight;
+		s += "\n 网页被卷去的高(ff)："+ document.body.scrollTop;
+		s += "\n 网页被卷去的高(ie)："+ document.documentElement.scrollTop;
+		s += "\n 网页被卷去的左："+ document.body.scrollLeft;
+		s += "\n 网页正文部分上："+ window.screenTop;
+		s += "\n 网页正文部分左："+ window.screenLeft;
+		s += "\n 屏幕分辨率的高："+ window.screen.height;
+		s += "\n 屏幕分辨率的宽："+ window.screen.width;
+		s += "\n 屏幕可用工作区高度："+ window.screen.availHeight;
+		s += "\n 屏幕可用工作区宽度："+ window.screen.availWidth;
+		s += "\n 你的屏幕设置是 "+ window.screen.colorDepth +" 位彩色";
+		s += "\n 你的屏幕设置 "+ window.screen.deviceXDPI +" 像素/英寸";
+		return s;
 	}
 
 

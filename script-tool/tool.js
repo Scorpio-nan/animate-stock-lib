@@ -1045,10 +1045,98 @@ var tool = {
 		s += "\n 你的屏幕设置是 "+ window.screen.colorDepth +" 位彩色";
 		s += "\n 你的屏幕设置 "+ window.screen.deviceXDPI +" 像素/英寸";
 		return s;
-	}
+	},
+	
+	
 
 
 };
+
+//数组随机排序     array.shuffle();
+Array.prototype.shuffle = function() {
+	var input = this;
+	for(var i = input.length - 1; i >= 0; i--) {
+		var randomIndex = Math.floor(Math.random() * (i + 1));
+		var itemAtIndex = input[randomIndex];
+		input[randomIndex] = input[i];
+		input[i] = itemAtIndex;
+	}
+	return input;
+}
+//数组冒泡排序     arr.bubSort()
+Array.prototype.bubSort = function() {
+	for(let i = 0; i < this.length; i++) {
+		for(let j = 0; j < this.length; j++) {
+			if(this[i] < this[j]) {
+				var temp = this[j];
+				this[j] = this[i];
+				this[i] = temp;
+			}
+		}
+	}
+	return this;
+}
+
+//数组快速排序     arr.quickSort()
+Array.prototype.quickSort = function() {
+	if(this.length <= 1)  {
+		return this;
+	}
+	var pivotIndex = Math.floor(this.length >> 1);
+	var pivot = this.splice(pivotIndex, 1)[0];
+	var lef =   [],
+		rig =   [];
+	for(var i = 0; i < this.length; i++)  {
+		if(this[i]  < pivot)  {
+			lef.push(this[i]);
+		} else {
+			rig.push(this[i]);
+		}
+	}
+	//递归
+	return lef.quickSort().concat(pivot, rig.quickSort()); 
+}
+
+//数组插入排序     插入一个数值，并进行排序 (常用斗地主游戏开发)      arr.insertSort(100)
+Array.prototype.insertSort = function(a) {
+	for(var i = 1; i < this.length; i++)  {
+		if(this[i]  >= a)  {
+			for(var j = this.length; j > i; j--)  {
+				this[j]  = this[j - 1];
+			}
+			this[i]  = a;
+			break;
+		}
+	}
+	if(this[this.length - 1] < a) this.push(a);
+	return this;
+}
+
+// 数组希尔排序  
+Array.prototype.shellSort = function() {
+	var gap = Math.ceil(this.length / 2);
+	while(gap > 0)  {
+		for(var k = 0; k < gap; k++)  {
+			var tagArr =   [];
+			tagArr.push(this[k]);
+			for(var i = k + gap; i < this.length; i = i + gap)  {
+				var temp = this[i];
+				tagArr.push(temp);
+				for(var j = i - gap; j >  -1; j = j - gap)  {
+					if(this[j]  > temp)  {
+						this[j + gap]  = this[j];
+					} else {
+						break;
+					}
+				}
+				this[j + gap]  = temp;
+			}
+		}
+		gap = parseInt(gap / 2);
+	}
+	return this;
+}
+			
 
 var requestAnimFrame = (function() {
 	return window.requestAnimationFrame ||

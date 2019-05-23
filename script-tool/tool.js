@@ -1047,7 +1047,143 @@ var tool = {
 		return s;
 	},
 	
+	//对多个数组进行排列组合 
+	Combol:function(arr){
+		var sarr = [[]];
+		for (var i = 0; i < arr.length; i++) {
+			var tarr = [];
+			for (var j = 0; j < sarr.length; j++)
+				for (var k = 0; k < arr[i].length; k++)
+					tarr.push(sarr[j].concat(arr[i][k]));
+			sarr = tarr;
+		} 
+		return sarr;
+	},
 	
+	//
+    //递归排列
+    // 从 arr[1...n] 中任选 num(0 < num <= n) 个数的所有排列
+    //
+	recursion_permutate:function(arr, num){
+		var r = [];
+        (function f(t, a, n) {
+            if (n == 0) return r.push(t);
+            for (var i = 0, l = a.length; i < l; i++) {
+                f(t.concat(a[i]), a.slice(0, i).concat(a.slice(i + 1)), n - 1);
+            }
+        })([], arr, num);
+        return r;
+	},
+	
+	//在数组里面选3个进行双数组合  
+	/*
+	 * [0,1]     001, 110
+	 * [0,1,2]   001, 002, 110, 112, 220, 221
+	 */
+	
+	arrayFunCombin:function(strArray){
+		var len=strArray.length;
+		var newArray=new Array();
+		for(var i=0;i<len;i++){
+			for(var j=0;j<len;j++){
+				for(var k=0;k<len;k++){
+					if(strArray[i] == strArray[j] && strArray[i] == strArray[k]) continue;
+					newArray.push(strArray[i]+","+strArray[j]+","+strArray[k]);
+				}
+			}
+		}
+		return newArray.filter(a => {
+			a = a.split(',');
+			if(a[0] === a[1]) return true;
+		});
+	},
+	
+	//将dom转换成字符串输出
+	/*
+	 * dom  document.getElementById();
+	 **/
+	getDomToString:function(dom){
+		var serilaiz = new XMLSerializer();
+		return serilaiz.serializeToString(dom);
+	},
+	
+	//时间秒转换成  时:分:秒
+	formatSeconds:function(value){
+		var secondTime = parseInt(value);// 秒
+        var minuteTime = 0;// 分
+        var hourTime = 0;// 小时
+        if(secondTime > 60) {
+            minuteTime = parseInt(secondTime / 60);
+            secondTime = parseInt(secondTime % 60);
+            if(minuteTime > 60) {
+                hourTime = parseInt(minuteTime / 60);
+                minuteTime = parseInt(minuteTime % 60);
+            }
+        }
+        var result = " " + parseInt(secondTime) + " 秒";
+        if(minuteTime > 0) {
+            result = " " + parseInt(minuteTime) + " 分" + result;
+        }
+        if(hourTime > 0) {
+            result = " " + parseInt(hourTime) + " 小时" + result;
+        }
+        return result;
+	},
+	
+	//将秒数时间秒转换成  天:时:分:秒
+	/** 
+	 * @param  {number} 150               
+	 */
+	SecondToDate:function(msd){
+		var time =msd
+		if (null != time && "" != time) {
+			if (time > 60 && time < 60 * 60) {
+				time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
+					parseInt(time / 60.0)) * 60) + "秒";
+			}
+			else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+				time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
+					parseInt(time / 3600.0)) * 60) + "分钟" +
+					parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+					parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+			} else if (time >= 60 * 60 * 24) {
+				time = parseInt(time / 3600.0/24) + "天" +parseInt((parseFloat(time / 3600.0/24)-
+					parseInt(time / 3600.0/24))*24) + "小时" + parseInt((parseFloat(time / 3600.0) -
+					parseInt(time / 3600.0)) * 60) + "分钟" +
+					parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+					parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+			}
+			else {
+				time = parseInt(time) + "秒";
+			}
+		}
+		return time;
+	},
+	
+	//时间戳转换成正常的日期格式
+	/** 
+	 * 时间戳格式化函数 
+	 * @param  {string} format    格式 
+	 * @param  {int}    timestamp 要格式化的时间 默认为当前时间 
+	 * @return {string}           格式化的时间字符串 
+	 */
+	TimestampToDate:function(timestamp){
+		
+		var date = new Date(timestamp );
+        var Y = date.getFullYear() + '-';
+
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+
+        var D = date.getDate() + ' ';
+
+        var h = date.getHours() + ':';
+
+        var m = date.getMinutes() + ':';
+
+        var s = date.getSeconds();
+
+        return Y+M+D+h+m+s;
+	}
 
 
 };

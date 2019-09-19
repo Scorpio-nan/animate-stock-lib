@@ -567,9 +567,10 @@ var tool = {
 		var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
 		var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
 		if (!(bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM)) {
-			return 1;
+			return false;
 		}
-		return 0;
+		//是手持设备
+		return true;
 	},
 
 	//正则表达式替换		例：将<>, 替换
@@ -788,11 +789,6 @@ var tool = {
 			pwd += $chars.charAt(Math.floor(Math.random() * (maxPos + 1)));　　
 		}　　
 		return pwd;
-	},
-
-	//随机创建三原色里面的颜色   比上面创建的颜色靓丽   https://zhuanlan.zhihu.com/p/28257724
-	randomColors: function() {
-
 	},
 
 	//将html转换成字符串格式   (前后端传值时需要)

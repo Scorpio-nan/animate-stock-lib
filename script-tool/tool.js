@@ -825,6 +825,10 @@ var tool = {
 		});
 		return arr2;
 	},
+	//多维数组转换成一维数组并去除重复数据排序
+	arrayFrom:function(arr){
+		return Array.from(new Set(arr.flat(Infinity))).sort((a,b)=> a-b );
+	},
 	/*
 	 * @ele  监听对象 
 	 * @type 事件名称
@@ -1179,9 +1183,47 @@ var tool = {
         var s = date.getSeconds();
 
         return Y+M+D+h+m+s;
+	},
+	/** 
+	 * 获取今天之前的 n 天 
+	 * @param  {number}     前 n 天 
+	 */
+	getTodayBefore:function(num){
+		var d = new Date();
+		var t = new Date(d);
+		t.setDate(d.getDate() - num);
+		var yy = t.getFullYear();
+		var mm = t.getMonth() + 1;
+		var dd = t.getDate();
+		return yy + '-' + (mm < 10 ? '0' + mm : mm) +'-' + (dd < 10 ? '0' + dd : dd) + ' 00:00'; 
+	},
+	
+	/**
+	 * 截取数值, 不是四舍五入, 是直接截取
+	 * @param  {number}     格式 
+	 */
+	NumberSplit:function(origin,num){
+		var temp = 0,		//临时变量		
+			l = 0,			//小数点左边
+			r = 0;			//小数点右边
+		if(typeof origin == 'number'){
+			temp = origin;
+		}else{
+			temp = parseFloat(origin);
+		}
+
+		l = parseInt(temp);
+		r = temp - parseInt(temp);
+		if(l === temp){
+			return temp.toFixed(num);
+		}
+		var s = r.toString();
+		if(s.length < num){
+			s += Array(num).join('0');
+		}
+		return (l + parseFloat(s.slice(0,num + 2))).toFixed(num);
 	}
-
-
+	
 };
 
 //数组随机排序     array.shuffle();

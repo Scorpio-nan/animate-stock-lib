@@ -1222,6 +1222,18 @@ var tool = {
 			s += Array(num).join('0');
 		}
 		return (l + parseFloat(s.slice(0,num + 2))).toFixed(num);
+	},
+
+
+	// 将 rgb 颜色转换成  hex 颜色
+	//  colorRGBtoHex("(235,152,123,1)");
+	colorRGBtoHex:function(color){
+		var rgb = color.split(',');
+		var r = parseInt(rgb[0].split('(')[1]);
+		var g = parseInt(rgb[1]);
+		var b = parseInt(rgb[2].split(')')[0]);
+		var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+		return hex;
 	}
 	
 };

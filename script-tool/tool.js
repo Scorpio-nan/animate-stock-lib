@@ -1,5 +1,5 @@
 var tool = {
-	getDateSpan: function(action) {
+	getDateSpan: function (action) {
 		var star_time, end_time;
 		if (action == "today") {
 			star_time = this.getDateBefore(0) + " 00:00:00"
@@ -25,17 +25,17 @@ var tool = {
 	},
 
 	//获取几天前的日期
-	getDateBefore: function(n) {
-		var dd = new Date();  
-	    dd.setDate(dd.getDate()+n);
-	    var y = dd.getFullYear();  
-	    var m = (dd.getMonth()+1)<10 ? ('0'+(dd.getMonth()+1)) : (dd.getMonth()+1);  
-	    var d = dd.getDate() <10 ? ('0'+ dd.getDate()) :dd.getDate();  
-	    return y+"-"+m+"-"+d;
+	getDateBefore: function (n) {
+		var dd = new Date();
+		dd.setDate(dd.getDate() + n);
+		var y = dd.getFullYear();
+		var m = (dd.getMonth() + 1) < 10 ? ('0' + (dd.getMonth() + 1)) : (dd.getMonth() + 1);
+		var d = dd.getDate() < 10 ? ('0' + dd.getDate()) : dd.getDate();
+		return y + "-" + m + "-" + d;
 	},
 
 	//获取当前时间
-	getTodayBegin: function() {
+	getTodayBegin: function () {
 		var date = new Date();
 		var month = date.getMonth() + 1;
 		var strDate = date.getDate();
@@ -50,7 +50,7 @@ var tool = {
 	},
 
 	//获取当前时间
-	getTodayEnd: function() {
+	getTodayEnd: function () {
 		var date = new Date();
 		var seperator1 = "-";
 		var seperator2 = ":";
@@ -67,7 +67,7 @@ var tool = {
 	},
 
 	//获取当天日期    不带时分秒
-	getTodayOnly: function() {
+	getTodayOnly: function () {
 		var date = new Date();
 		var date = new Date();
 		var seperator1 = "-";
@@ -84,7 +84,7 @@ var tool = {
 		return currentdate;
 	},
 	//当前时间 时分秒，日期
-	getDetailedDate: function() {
+	getDetailedDate: function () {
 		var date = new Date();
 		var obj = {
 			YY: date.getFullYear(),
@@ -99,7 +99,7 @@ var tool = {
 		return obj
 	},
 	//解决浮点数计算不准确 默认保留6位小数
-	signFigures: function(num, rank = 6) {
+	signFigures: function (num, rank = 6) {
 		if (!num) return (0);
 		const sign = num / Math.abs(num);
 		const number = num * sign;
@@ -117,12 +117,12 @@ var tool = {
 	},
 
 	//小数位取整  保留两位
-	mathRound: function(x, num) {
+	mathRound: function (x, num) {
 		return Math.round(x * Math.pow(10, num)) / Math.pow(10, num);
 	},
 
 	//判断两个数组是否相等  ，返回值 Boolean
-	arrayEqual: function(arr1, arr2) {
+	arrayEqual: function (arr1, arr2) {
 		if (arr1 === arr2) return true;
 		if (arr1.length != arr2.length) return false;
 		for (var i = 0; i < arr1.length; ++i) {
@@ -132,7 +132,7 @@ var tool = {
 	},
 
 	//深度拷贝，支持常见类型
-	deepClone: function(values) {
+	deepClone: function (values) {
 		var copy;
 		// Handle the 3 simple types, and null or undefined
 		if (null == values || "object" != typeof values) return values;
@@ -162,7 +162,7 @@ var tool = {
 	},
 
 	//将现金转换成大小写中文
-	digitUppercase: function(n) {
+	digitUppercase: function (n) {
 		var fraction = ['角', '分'];
 		var digit = [
 			'零', '壹', '贰', '叁', '肆',
@@ -192,9 +192,9 @@ var tool = {
 			.replace(/(零.)+/g, '零')
 			.replace(/^整$/, '零元整');
 	},
-	
+
 	//格式化开始时间到当前时间已过多久   返回值String
-	formatPassTime: function(startTime) {
+	formatPassTime: function (startTime) {
 		var currentTime = Date.parse(new Date()),
 			time = currentTime - startTime,
 			day = parseInt(time / (1000 * 60 * 60 * 24)),
@@ -211,7 +211,7 @@ var tool = {
 	},
 
 	//格式化现在时间到设定的时间之间，相差多久  返回值 String
-	formatRemainTime: function(endTime) {
+	formatRemainTime: function (endTime) {
 		var startDate = new Date(); //开始时间
 		var endDate = new Date(endTime); //结束时间
 		var t = endDate.getTime() - startDate.getTime(); //时间差
@@ -229,7 +229,7 @@ var tool = {
 	},
 
 	//根据cookie名获取cookie
-	getCookie: function(name) {
+	getCookie: function (name) {
 		var arr = document.cookie.replace(/\s/g, "").split(';');
 		for (var i = 0; i < arr.length; i++) {
 			var tempArr = arr[i].split('=');
@@ -241,17 +241,17 @@ var tool = {
 	},
 
 	//获取浏览器类型和版本号
-	getExplore: function() {
+	getExplore: function () {
 		var sys = {},
 			ua = navigator.userAgent.toLowerCase(),
 			s;
-		(s = ua.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1]:
+		(s = ua.match(/rv:([\d.]+)\) like gecko/)) ? sys.ie = s[1] :
 			(s = ua.match(/msie ([\d\.]+)/)) ? sys.ie = s[1] :
-			(s = ua.match(/edge\/([\d\.]+)/)) ? sys.edge = s[1] :
-			(s = ua.match(/firefox\/([\d\.]+)/)) ? sys.firefox = s[1] :
-			(s = ua.match(/(?:opera|opr).([\d\.]+)/)) ? sys.opera = s[1] :
-			(s = ua.match(/chrome\/([\d\.]+)/)) ? sys.chrome = s[1] :
-			(s = ua.match(/version\/([\d\.]+).*safari/)) ? sys.safari = s[1] : 0;
+				(s = ua.match(/edge\/([\d\.]+)/)) ? sys.edge = s[1] :
+					(s = ua.match(/firefox\/([\d\.]+)/)) ? sys.firefox = s[1] :
+						(s = ua.match(/(?:opera|opr).([\d\.]+)/)) ? sys.opera = s[1] :
+							(s = ua.match(/chrome\/([\d\.]+)/)) ? sys.chrome = s[1] :
+								(s = ua.match(/version\/([\d\.]+).*safari/)) ? sys.safari = s[1] : 0;
 		// 根据关系进行判断
 		if (sys.ie) return ('IE: ' + sys.ie)
 		if (sys.edge) return ('EDGE: ' + sys.edge)
@@ -263,7 +263,7 @@ var tool = {
 	},
 
 	//根据keyCode获取键名(键盘事件),
-	getKeyName: function(keycode) {
+	getKeyName: function (keycode) {
 		var keyCodeMap = {
 			8: 'Backspace',
 			9: 'Tab',
@@ -382,7 +382,7 @@ var tool = {
 	},
 
 	//获取当前操作系统的类型
-	getOS: function() {
+	getOS: function () {
 		var userAgent = 'navigator' in window && 'userAgent' in navigator && navigator.userAgent.toLowerCase() || '';
 		var vendor = 'navigator' in window && 'vendor' in navigator && navigator.vendor.toLowerCase() || '';
 		var appVersion = 'navigator' in window && 'appVersion' in navigator && navigator.appVersion.toLowerCase() || '';
@@ -396,37 +396,37 @@ var tool = {
 	},
 
 	//邮箱格式验证    返回值boolean
-	isEmail: function(str) {
+	isEmail: function (str) {
 		return /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(str);
 	},
 
 	//判断对象是否是一个空的对象 返回值boolean
-	isEmptyObject: function(obj) {
+	isEmptyObject: function (obj) {
 		if (!obj || typeof obj !== 'object' || Array.isArray(obj))
 			return false
 		return !Object.keys(obj).length;
 	},
 
 	//判断省份证号是否正确  返回值boolean
-	isIdCard: function(str) {
+	isIdCard: function (str) {
 		return /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(str);
 	},
 
 	//判断当前号码是否是正确的手机号 返回值boolean
-	isPhoneNum: function(str) {
+	isPhoneNum: function (str) {
 		return /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/.test(str);
 	},
 	//匹配国际电话号码
-	phoneCheck:function(str){
+	phoneCheck: function (str) {
 		return /\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/.test(str);
 	},
 	//判断该当前url地址是否正确
-	isUrl: function(str) {
+	isUrl: function (str) {
 		return /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i.test(str);
 	},
 
 	//获取当前元素距离文档(document)的位置
-	offset: function(ele) {
+	offset: function (ele) {
 		var pos = {
 			left: 0,
 			top: 0
@@ -440,7 +440,7 @@ var tool = {
 	},
 
 	//将url地址参数转换成对象
-	parseQueryString: function(url) {
+	parseQueryString: function (url) {
 		url = url == null ? window.location.href : url
 		var search = url.substring(url.lastIndexOf('?') + 1)
 		if (!search) {
@@ -450,29 +450,29 @@ var tool = {
 	},
 
 	//生成随机颜色
-	randomColor: function() {
+	randomColor: function () {
 		return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
 	},
 
 	//生成指定范围内的随机数
-	randomNum: function(min, max) {
+	randomNum: function (min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	},
 
 	//设置cookie  键 值 过期时间
-	setCookie: function(name, value, days) {
+	setCookie: function (name, value, days) {
 		var date = new Date();
 		date.setDate(date.getDate() + days);
 		document.cookie = name + '=' + value + ';expires=' + date;
 	},
 
 	//删除cookie  依赖setCookie函数
-	removeCookie: function(name) {
+	removeCookie: function (name) {
 		setCookie(name, '1', -1);
 	},
 
 	//获取页面滚动条到顶部的距离
-	getScrollTop: function() {
+	getScrollTop: function () {
 		//return (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 		var scrollPos;
 		if (window.pageYOffset) {
@@ -486,13 +486,13 @@ var tool = {
 	},
 
 	//设置滚动条顶部的距离
-	setScrollTop: function(value) {
+	setScrollTop: function (value) {
 		window.scrollTo(0, value);
 		return value;
 	},
 
 	//在duration时间内，滚动条平滑滚动到to指定位置		依赖getScrollTop ,setScrollTop 和 requestAnimFrame 函数
-	scrollTo: function(to, duration) {
+	scrollTo: function (to, duration) {
 		if (duration < 0) {
 			setScrollTop(to);
 			return
@@ -501,7 +501,7 @@ var tool = {
 		if (diff === 0) return
 		var step = diff / duration * 10;
 		requestAnimationFrame(
-			function() {
+			function () {
 				if (Math.abs(step) > Math.abs(diff)) {
 					setScrollTop(getScrollTop() + diff);
 					return;
@@ -515,7 +515,7 @@ var tool = {
 	},
 
 	//对象序列化
-	stringfyQueryString: function(obj) {
+	stringfyQueryString: function (obj) {
 		if (!obj) return '';
 		var pairs = [];
 
@@ -540,10 +540,10 @@ var tool = {
 	  downCb 当软键盘弹起后，缩回的回调
 	  upCb 当软键盘弹起的回调
 	*/
-	windowResize: function(downCb, upCb) {
+	windowResize: function (downCb, upCb) {
 		var clientHeight = window.innerHeight;
-		downCb = typeof downCb === 'function' ? downCb : function() {}
-		upCb = typeof upCb === 'function' ? upCb : function() {}
+		downCb = typeof downCb === 'function' ? downCb : function () { }
+		upCb = typeof upCb === 'function' ? upCb : function () { }
 		window.addEventListener('resize', () => {
 			var height = window.innerHeight;
 			if (height === clientHeight) {
@@ -556,7 +556,7 @@ var tool = {
 	},
 
 	//判断当前设备是手持设备还是客户端	 手持设备返回 0 ，客户端返回 1
-	browserRedirect: function() {
+	browserRedirect: function () {
 		var sUserAgent = navigator.userAgent.toLowerCase();
 		var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
 		var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
@@ -574,8 +574,8 @@ var tool = {
 	},
 
 	//正则表达式替换		例：将<>, 替换
-	RepalaceStr: function() {
-		return text.replace(/[<>,]/g, function(match, pos, orgtext) {
+	RepalaceStr: function () {
+		return text.replace(/[<>,]/g, function (match, pos, orgtext) {
 			switch (match) {
 				case '<':
 					return '(';
@@ -588,7 +588,7 @@ var tool = {
 	},
 
 	//最高效率求数组里面最大，最小值  传1取最大值，传0取最小值
-	MaxMinNum: function(arr, m) {
+	MaxMinNum: function (arr, m) {
 		if (m == 1) {
 			return Math.max.apply(Math, arr);
 		} else {
@@ -596,7 +596,7 @@ var tool = {
 		}
 	},
 	//随机生成数字和字母的组合
-	randomWord: function(randomFlag, min, max) {
+	randomWord: function (randomFlag, min, max) {
 		var str = "",
 			range = min,
 			arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -730,7 +730,7 @@ var tool = {
 		callback(resultArrs);
 	},
 	//将秒数转换成日期格式   （开奖时间）
-	myTimeStamp: function(second_time) {
+	myTimeStamp: function (second_time) {
 
 		var time = parseInt(second_time);
 		var second = parseInt(second_time) % 60;
@@ -759,11 +759,11 @@ var tool = {
 	},
 
 	//判断当前手持设备是否是爱疯叉
-	isIphoneX: function() {
-		if((/iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)) ||
-		   (/iphone/gi.test(navigator.userAgent) && (screen.height == 896 && screen.width == 414)) ||
-		   (/iphone/gi.test(navigator.userAgent) && (Math.floor(screen.height/screen.width*100) == 216))
-		){
+	isIphoneX: function () {
+		if ((/iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)) ||
+			(/iphone/gi.test(navigator.userAgent) && (screen.height == 896 && screen.width == 414)) ||
+			(/iphone/gi.test(navigator.userAgent) && (Math.floor(screen.height / screen.width * 100) == 216))
+		) {
 			return true;
 		}
 		return false;
@@ -778,21 +778,21 @@ var tool = {
 	},
 
 	//随机生成多少位的字符串，用于制作token
-	randomString: function(len) {　　
-		len = len || 32;　　
-		var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';　　
-		var maxPos = $chars.length;　　
-		var pwd = '';　　
+	randomString: function (len) {
+		len = len || 32;
+		var $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var maxPos = $chars.length;
+		var pwd = '';
 		for (i = 0; i < len; i++) {
 			//0~32的整数
-			　　　　
-			pwd += $chars.charAt(Math.floor(Math.random() * (maxPos + 1)));　　
-		}　　
+
+			pwd += $chars.charAt(Math.floor(Math.random() * (maxPos + 1)));
+		}
 		return pwd;
 	},
 
 	//将html转换成字符串格式   (前后端传值时需要)
-	htmlEncodeByRegExp: function(str) {
+	htmlEncodeByRegExp: function (str) {
 		var s = "";
 		if (str.length == 0) return "";
 		s = str.replace(/&/g, "&amp;");
@@ -805,7 +805,7 @@ var tool = {
 	},
 
 	//将字符串解码成html格式
-	htmlDecodeByRegExp: function(str) {
+	htmlDecodeByRegExp: function (str) {
 		var s = "";
 		if (str.length == 0) return "";
 		s = str.replace(/&amp;/g, "&");
@@ -818,23 +818,23 @@ var tool = {
 	},
 
 	//将多维数组转换成一维数组    
-	unid: function(arr) {
+	unid: function (arr) {
 		var arr1 = (arr + '').split(','); //将数组转字符串后再以逗号分隔转为数组
-		var arr2 = arr1.map(function(x) {
+		var arr2 = arr1.map(function (x) {
 			return Number(x);
 		});
 		return arr2;
 	},
 	//多维数组转换成一维数组并去除重复数据排序
-	arrayFrom:function(arr){
-		return Array.from(new Set(arr.flat(Infinity))).sort((a,b)=> a-b );
+	arrayFrom: function (arr) {
+		return Array.from(new Set(arr.flat(Infinity))).sort((a, b) => a - b);
 	},
 	/*
 	 * @ele  监听对象 
 	 * @type 事件名称
 	 * @handle回调函数
 	 */
-	addHandler: function(ele, type, handler) {
+	addHandler: function (ele, type, handler) {
 		if (ele.addEventListener) {
 			ele.addEventListener(type, handler)
 		} else if (ele.attachEvent) {
@@ -844,7 +844,7 @@ var tool = {
 		}
 	},
 	//移除事件监听
-	removeHandler: function(ele, type, handler) {
+	removeHandler: function (ele, type, handler) {
 		if (ele.removeEventListener) {
 			ele.removeEventListener(type, handler)
 		} else if (ele.attachEvent) {
@@ -854,12 +854,12 @@ var tool = {
 		}
 	},
 	//响应式字体大小    依赖fontAdapt函数     750设计稿  1rem = 100px
-	getFontSize: function() {
+	getFontSize: function () {
 		var doc = document,
 			win = window;
 		var docEl = doc.documentElement,
 			resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-			recalc = function() {
+			recalc = function () {
 				var clientWidth = docEl.clientWidth;
 				if (!clientWidth) return;
 				//如果屏幕大于750（750是根据我效果图设置的，具体数值参考效果图），就设置clientWidth=750，防止font-size会超过100px
@@ -876,23 +876,23 @@ var tool = {
 	},
 
 	//将数组里面的2进制数转换成10进制
-	binaryArrayToNumber: function(arr) {
+	binaryArrayToNumber: function (arr) {
 		var str = arr.join('');
 		str.toString(2);
 		return parseInt(str, 2);
 	},
 
 	//求一个数组里面的所有数的最小公倍数
-	smallestCommons: function(arr) {
+	smallestCommons: function (arr) {
 		//判断是否为质数
-		var isPrime = function(n) {
+		var isPrime = function (n) {
 			for (var i = 2; i < n; i++) {
 				if (n % i === 0) return false;
 			}
 			return true;
 		};
 		//分解为质因数
-		var getPrime = function(n) {
+		var getPrime = function (n) {
 			var result = [],
 				primes = [];
 			for (var i = 2; i <= n; i++) {
@@ -940,13 +940,13 @@ var tool = {
 	},
 
 	//判断一个数被开方之后是整数还是小数   整数true，小数false
-	isSquare: function(n) {
+	isSquare: function (n) {
 		if (n < 0) return false;
 		return Math.sqrt(n).toString().indexOf('.') < 0;
 	},
 
 	//将阿拉伯数字替换成罗马数字显示
-	convert: function(num) {
+	convert: function (num) {
 		var a = [
 			["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
 			["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"],
@@ -967,12 +967,12 @@ var tool = {
 	 *	@inmmediate		boolean	是否是及时触发
 	 * eg:document.addEventLinster('scroll',debounce(function(){},1000,true),false);
 	 */
-	debounce:function(func, wait, immediate) {
+	debounce: function (func, wait, immediate) {
 		var timeout;
-		return function() {
+		return function () {
 			var context = this,
 				args = arguments;
-			var later = function() {
+			var later = function () {
 				timeout = null;
 				if (!immediate) func.apply(context, args);
 			};
@@ -984,71 +984,71 @@ var tool = {
 			if (callNow) func.apply(context, args);
 		};
 	},
-	
+
 	//银行卡序列化    4位一个空格
-	bankCardSerialization:function(str){
+	bankCardSerialization: function (str) {
 		return str.replace(/\s/g, '').replace(/(.{4})/g, "$1 ");
 	},
-	
+
 	//银行卡只显示后4位 
-	bankCardRef:function(str){
-		return str.replace(/\s/g,'').replace(/(\d{4})\d+(\d{4})$/, "**** **** **** $2");
+	bankCardRef: function (str) {
+		return str.replace(/\s/g, '').replace(/(\d{4})\d+(\d{4})$/, "**** **** **** $2");
 	},
-	
+
 	/*
 	* APP版本更新对比
 	* ov  旧版本  string  1.0.0
 	* nv  新版本  string  2.5.0
 	* return      boolean
 	**/
-	compareVersion:function (ov, nv) {
-		if(!ov || !nv || ov == "" || nv == "") {
+	compareVersion: function (ov, nv) {
+		if (!ov || !nv || ov == "" || nv == "") {
 			return false;
 		}
 		var b = false,
 			ova = ov.split(".", 4),
 			nva = nv.split(".", 4);
-		for(var i = 0; i < ova.length && i < nva.length; i++) {
+		for (var i = 0; i < ova.length && i < nva.length; i++) {
 			var so = ova[i],
 				no = parseInt(so),
 				sn = nva[i],
 				nn = parseInt(sn);
-			if(nn > no || sn.length > so.length) {
+			if (nn > no || sn.length > so.length) {
 				return true;
-			} else if(nn < no) {
+			} else if (nn < no) {
 				return false;
 			}
 		}
-		if(nva.length > ova.length && 0 == nv.indexOf(ov)) {
+		if (nva.length > ova.length && 0 == nv.indexOf(ov)) {
 			return true;
 		}
 	},
-	
+
 	// 获取当前网页的信息
-	getClientInfo:function(){
+	getClientInfo: function () {
 		var s = "";
-		s += " 网页可见区域宽："+ document.body.clientWidth;
-		s += "\n 网页可见区域高："+ document.body.clientHeight;
-		s += "\n 网页可见区域宽："+ document.body.offsetWidth + " (包括边线和滚动条的宽)";
-		s += "\n 网页可见区域高："+ document.body.offsetHeight + " (包括边线的宽)";
-		s += "\n 网页正文全文宽："+ document.body.scrollWidth;
-		s += "\n 网页正文全文高："+ document.body.scrollHeight;
-		s += "\n 网页被卷去的高(ff)："+ document.body.scrollTop;
-		s += "\n 网页被卷去的高(ie)："+ document.documentElement.scrollTop;
-		s += "\n 网页被卷去的左："+ document.body.scrollLeft;
-		s += "\n 网页正文部分上："+ window.screenTop;
-		s += "\n 网页正文部分左："+ window.screenLeft;
-		s += "\n 屏幕分辨率的高："+ window.screen.height;
-		s += "\n 屏幕分辨率的宽："+ window.screen.width;
-		s += "\n 屏幕可用工作区高度："+ window.screen.availHeight;
-		s += "\n 屏幕可用工作区宽度："+ window.screen.availWidth;
-		s += "\n 你的屏幕设置是 "+ window.screen.colorDepth +" 位彩色";
-		s += "\n 你的屏幕设置 "+ window.screen.deviceXDPI +" 像素/英寸";
+		s += " 网页可见区域宽：" + document.body.clientWidth;
+		s += "\n 网页可见区域高：" + document.body.clientHeight;
+		s += "\n 网页可见区域宽：" + document.body.offsetWidth + " (包括边线和滚动条的宽)";
+		s += "\n 网页可见区域高：" + document.body.offsetHeight + " (包括边线的宽)";
+		s += "\n 网页正文全文宽：" + document.body.scrollWidth;
+		s += "\n 网页正文全文高：" + document.body.scrollHeight;
+		s += "\n 网页被卷去的高(ff)：" + document.body.scrollTop;
+		s += "\n 网页被卷去的高(ie)：" + document.documentElement.scrollTop;
+		s += "\n 网页被卷去的左：" + document.body.scrollLeft;
+		s += "\n 网页正文部分上：" + window.screenTop;
+		s += "\n 网页正文部分左：" + window.screenLeft;
+		s += "\n 屏幕分辨率的高：" + window.screen.height;
+		s += "\n 屏幕分辨率的宽：" + window.screen.width;
+		s += "\n 屏幕可用工作区高度：" + window.screen.availHeight;
+		s += "\n 屏幕可用工作区宽度：" + window.screen.availWidth;
+		s += "\n 你的屏幕设置是 " + window.screen.colorDepth + " 位彩色";
+		s += "\n 你的屏幕设置 " + window.screen.deviceXDPI + " 像素/英寸";
 		return s;
 	},
-	
+
 	//对多个数组进行排列组合 
-	Combol:function(arr){
+	Combol: function (arr) {
 		var sarr = [[]];
 		for (var i = 0; i < arr.length; i++) {
 			var tarr = [];
@@ -1056,86 +1056,86 @@ var tool = {
 				for (var k = 0; k < arr[i].length; k++)
 					tarr.push(sarr[j].concat(arr[i][k]));
 			sarr = tarr;
-		} 
+		}
 		return sarr;
 	},
-	
+
 	//
-    //递归排列
-    // 从 arr[1...n] 中任选 num(0 < num <= n) 个数的所有排列
-    //
-	recursion_permutate:function(arr, num){
+	//递归排列
+	// 从 arr[1...n] 中任选 num(0 < num <= n) 个数的所有排列
+	//
+	recursion_permutate: function (arr, num) {
 		var r = [];
-        (function f(t, a, n) {
-            if (n == 0) return r.push(t);
-            for (var i = 0, l = a.length; i < l; i++) {
-                f(t.concat(a[i]), a.slice(0, i).concat(a.slice(i + 1)), n - 1);
-            }
-        })([], arr, num);
-        return r;
+		(function f(t, a, n) {
+			if (n == 0) return r.push(t);
+			for (var i = 0, l = a.length; i < l; i++) {
+				f(t.concat(a[i]), a.slice(0, i).concat(a.slice(i + 1)), n - 1);
+			}
+		})([], arr, num);
+		return r;
 	},
-	
+
 	//在数组里面选3个进行双数组合  
 	/*
 	 * [0,1]     001, 110
 	 * [0,1,2]   001, 002, 110, 112, 220, 221
 	 */
-	
-	arrayFunCombin:function(strArray){
-		var len=strArray.length;
-		var newArray=new Array();
-		for(var i=0;i<len;i++){
-			for(var j=0;j<len;j++){
-				for(var k=0;k<len;k++){
-					if(strArray[i] == strArray[j] && strArray[i] == strArray[k]) continue;
-					newArray.push(strArray[i]+","+strArray[j]+","+strArray[k]);
+
+	arrayFunCombin: function (strArray) {
+		var len = strArray.length;
+		var newArray = new Array();
+		for (var i = 0; i < len; i++) {
+			for (var j = 0; j < len; j++) {
+				for (var k = 0; k < len; k++) {
+					if (strArray[i] == strArray[j] && strArray[i] == strArray[k]) continue;
+					newArray.push(strArray[i] + "," + strArray[j] + "," + strArray[k]);
 				}
 			}
 		}
 		return newArray.filter(a => {
 			a = a.split(',');
-			if(a[0] === a[1]) return true;
+			if (a[0] === a[1]) return true;
 		});
 	},
-	
+
 	//将dom转换成字符串输出
 	/*
 	 * dom  document.getElementById();
 	 **/
-	getDomToString:function(dom){
+	getDomToString: function (dom) {
 		var serilaiz = new XMLSerializer();
 		return serilaiz.serializeToString(dom);
 	},
-	
+
 	//时间秒转换成  时:分:秒
-	formatSeconds:function(value){
+	formatSeconds: function (value) {
 		var secondTime = parseInt(value);// 秒
-        var minuteTime = 0;// 分
-        var hourTime = 0;// 小时
-        if(secondTime > 60) {
-            minuteTime = parseInt(secondTime / 60);
-            secondTime = parseInt(secondTime % 60);
-            if(minuteTime > 60) {
-                hourTime = parseInt(minuteTime / 60);
-                minuteTime = parseInt(minuteTime % 60);
-            }
-        }
-        var result = " " + parseInt(secondTime) + " 秒";
-        if(minuteTime > 0) {
-            result = " " + parseInt(minuteTime) + " 分" + result;
-        }
-        if(hourTime > 0) {
-            result = " " + parseInt(hourTime) + " 小时" + result;
-        }
-        return result;
+		var minuteTime = 0;// 分
+		var hourTime = 0;// 小时
+		if (secondTime > 60) {
+			minuteTime = parseInt(secondTime / 60);
+			secondTime = parseInt(secondTime % 60);
+			if (minuteTime > 60) {
+				hourTime = parseInt(minuteTime / 60);
+				minuteTime = parseInt(minuteTime % 60);
+			}
+		}
+		var result = " " + parseInt(secondTime) + " 秒";
+		if (minuteTime > 0) {
+			result = " " + parseInt(minuteTime) + " 分" + result;
+		}
+		if (hourTime > 0) {
+			result = " " + parseInt(hourTime) + " 小时" + result;
+		}
+		return result;
 	},
-	
+
 	//将秒数时间秒转换成  天:时:分:秒
 	/** 
 	 * @param  {number} 150               
 	 */
-	SecondToDate:function(msd){
-		var time =msd
+	SecondToDate: function (msd) {
+		var time = msd
 		if (null != time && "" != time) {
 			if (time > 60 && time < 60 * 60) {
 				time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
@@ -1145,13 +1145,13 @@ var tool = {
 				time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
 					parseInt(time / 3600.0)) * 60) + "分钟" +
 					parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
-					parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+						parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
 			} else if (time >= 60 * 60 * 24) {
-				time = parseInt(time / 3600.0/24) + "天" +parseInt((parseFloat(time / 3600.0/24)-
-					parseInt(time / 3600.0/24))*24) + "小时" + parseInt((parseFloat(time / 3600.0) -
-					parseInt(time / 3600.0)) * 60) + "分钟" +
+				time = parseInt(time / 3600.0 / 24) + "天" + parseInt((parseFloat(time / 3600.0 / 24) -
+					parseInt(time / 3600.0 / 24)) * 24) + "小时" + parseInt((parseFloat(time / 3600.0) -
+						parseInt(time / 3600.0)) * 60) + "分钟" +
 					parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
-					parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+						parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
 			}
 			else {
 				time = parseInt(time) + "秒";
@@ -1159,7 +1159,7 @@ var tool = {
 		}
 		return time;
 	},
-	
+
 	//时间戳转换成正常的日期格式
 	/** 
 	 * 时间戳格式化函数 
@@ -1167,81 +1167,121 @@ var tool = {
 	 * @param  {int}    timestamp 要格式化的时间 默认为当前时间 
 	 * @return {string}           格式化的时间字符串 
 	 */
-	TimestampToDate:function(timestamp){
-		
-		var date = new Date(timestamp );
-        var Y = date.getFullYear() + '-';
+	TimestampToDate: function (timestamp) {
 
-        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		var date = new Date(timestamp);
+		var Y = date.getFullYear() + '-';
 
-        var D = date.getDate() + ' ';
+		var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
 
-        var h = date.getHours() + ':';
+		var D = date.getDate() + ' ';
 
-        var m = date.getMinutes() + ':';
+		var h = date.getHours() + ':';
 
-        var s = date.getSeconds();
+		var m = date.getMinutes() + ':';
 
-        return Y+M+D+h+m+s;
+		var s = date.getSeconds();
+
+		return Y + M + D + h + m + s;
 	},
 	/** 
 	 * 获取今天之前的 n 天 
 	 * @param  {number}     前 n 天 
 	 */
-	getTodayBefore:function(num){
+	getTodayBefore: function (num) {
 		var d = new Date();
 		var t = new Date(d);
 		t.setDate(d.getDate() - num);
 		var yy = t.getFullYear();
 		var mm = t.getMonth() + 1;
 		var dd = t.getDate();
-		return yy + '-' + (mm < 10 ? '0' + mm : mm) +'-' + (dd < 10 ? '0' + dd : dd) + ' 00:00'; 
+		return yy + '-' + (mm < 10 ? '0' + mm : mm) + '-' + (dd < 10 ? '0' + dd : dd) + ' 00:00';
 	},
-	
+
 	/**
 	 * 截取数值, 不是四舍五入, 是直接截取
 	 * @param  {number}     格式 
 	 */
-	NumberSplit:function(origin,num){
+	NumberSplit: function (origin, num) {
 		var temp = 0,		//临时变量		
 			l = 0,			//小数点左边
 			r = 0;			//小数点右边
-		if(typeof origin == 'number'){
+		if (typeof origin == 'number') {
 			temp = origin;
-		}else{
+		} else {
 			temp = parseFloat(origin);
 		}
 
 		l = parseInt(temp);
 		r = temp - parseInt(temp);
-		if(l === temp){
+		if (l === temp) {
 			return temp.toFixed(num);
 		}
 		var s = r.toString();
-		if(s.length < num){
+		if (s.length < num) {
 			s += Array(num).join('0');
 		}
-		return (l + parseFloat(s.slice(0,num + 2))).toFixed(num);
+		return (l + parseFloat(s.slice(0, num + 2))).toFixed(num);
 	},
 
 
 	// 将 rgb 颜色转换成  hex 颜色
 	//  colorRGBtoHex("(235,152,123,1)");
-	colorRGBtoHex:function(color){
+	colorRGBtoHex: function (color) {
 		var rgb = color.split(',');
 		var r = parseInt(rgb[0].split('(')[1]);
 		var g = parseInt(rgb[1]);
 		var b = parseInt(rgb[2].split(')')[0]);
 		var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 		return hex;
+	},
+
+	/**
+	 *
+	 * @param {*} fn 被节流的函数
+	 * @param {*} delay  规定的时间
+	 */
+	throttle: function (fn, delay) {
+		// 记录上一次函数触发的时间
+		var lastTime = 0;
+		return () => {
+			// 记录会话当前函数触发的时间
+			var nowTime = Date.now();
+			// 当前时间-下一次触发时间> 传入的时间
+			if (nowTime - lastTime > delay) {
+				// this指向的问题
+				fn.call(this);
+				// 同步时间
+				lastTime = nowTime;
+			}
+		};
+	},
+
+	/**
+	 *
+	 * @param {*} fn
+	 * @param {*} delay
+	 */
+	debounces: function (fn, delay) {
+		// 记录上一次的延时器
+		var timer = null;
+		return () => {
+			// 清除上一次延时器
+			clearTimeout(timer);
+			// 重新设置新的延时器
+			timer = setTimeout(() => {
+				// 解决this指向问题
+				fn.apply(this);
+			}, delay);
+		};
 	}
-	
+
 };
 
 //数组随机排序     array.shuffle();
-Array.prototype.shuffle = function() {
+Array.prototype.shuffle = function () {
 	var input = this;
-	for(var i = input.length - 1; i >= 0; i--) {
+	for (var i = input.length - 1; i >= 0; i--) {
 		var randomIndex = Math.floor(Math.random() * (i + 1));
 		var itemAtIndex = input[randomIndex];
 		input[randomIndex] = input[i];
@@ -1250,10 +1290,10 @@ Array.prototype.shuffle = function() {
 	return input;
 }
 //数组冒泡排序     arr.bubSort()
-Array.prototype.bubSort = function() {
-	for(let i = 0; i < this.length; i++) {
-		for(let j = 0; j < this.length; j++) {
-			if(this[i] < this[j]) {
+Array.prototype.bubSort = function () {
+	for (let i = 0; i < this.length; i++) {
+		for (let j = 0; j < this.length; j++) {
+			if (this[i] < this[j]) {
 				var temp = this[j];
 				this[j] = this[i];
 				this[i] = temp;
@@ -1264,71 +1304,71 @@ Array.prototype.bubSort = function() {
 }
 
 //数组快速排序     arr.quickSort()
-Array.prototype.quickSort = function() {
-	if(this.length <= 1)  {
+Array.prototype.quickSort = function () {
+	if (this.length <= 1) {
 		return this;
 	}
 	var pivotIndex = Math.floor(this.length >> 1);
 	var pivot = this.splice(pivotIndex, 1)[0];
-	var lef =   [],
-		rig =   [];
-	for(var i = 0; i < this.length; i++)  {
-		if(this[i]  < pivot)  {
+	var lef = [],
+		rig = [];
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] < pivot) {
 			lef.push(this[i]);
 		} else {
 			rig.push(this[i]);
 		}
 	}
 	//递归
-	return lef.quickSort().concat(pivot, rig.quickSort()); 
+	return lef.quickSort().concat(pivot, rig.quickSort());
 }
 
 //数组插入排序     插入一个数值，并进行排序 (常用斗地主游戏开发)      arr.insertSort(100)
-Array.prototype.insertSort = function(a) {
-	for(var i = 1; i < this.length; i++)  {
-		if(this[i]  >= a)  {
-			for(var j = this.length; j > i; j--)  {
-				this[j]  = this[j - 1];
+Array.prototype.insertSort = function (a) {
+	for (var i = 1; i < this.length; i++) {
+		if (this[i] >= a) {
+			for (var j = this.length; j > i; j--) {
+				this[j] = this[j - 1];
 			}
-			this[i]  = a;
+			this[i] = a;
 			break;
 		}
 	}
-	if(this[this.length - 1] < a) this.push(a);
+	if (this[this.length - 1] < a) this.push(a);
 	return this;
 }
 
 // 数组希尔排序  
-Array.prototype.shellSort = function() {
+Array.prototype.shellSort = function () {
 	var gap = Math.ceil(this.length / 2);
-	while(gap > 0)  {
-		for(var k = 0; k < gap; k++)  {
-			var tagArr =   [];
+	while (gap > 0) {
+		for (var k = 0; k < gap; k++) {
+			var tagArr = [];
 			tagArr.push(this[k]);
-			for(var i = k + gap; i < this.length; i = i + gap)  {
+			for (var i = k + gap; i < this.length; i = i + gap) {
 				var temp = this[i];
 				tagArr.push(temp);
-				for(var j = i - gap; j >  -1; j = j - gap)  {
-					if(this[j]  > temp)  {
-						this[j + gap]  = this[j];
+				for (var j = i - gap; j > -1; j = j - gap) {
+					if (this[j] > temp) {
+						this[j + gap] = this[j];
 					} else {
 						break;
 					}
 				}
-				this[j + gap]  = temp;
+				this[j + gap] = temp;
 			}
 		}
 		gap = parseInt(gap / 2);
 	}
 	return this;
 }
-			
 
-var requestAnimFrame = (function() {
+
+var requestAnimFrame = (function () {
 	return window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
-		function(callback) {
+		function (callback) {
 			window.setTimeout(callback, 1000 / 60);
 		};
 })();

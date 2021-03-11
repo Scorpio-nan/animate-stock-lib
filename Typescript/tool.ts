@@ -170,3 +170,33 @@ export const Event = {
     $emit,
     $off
 }
+
+
+/**
+ * 随机生成字符串
+ * @param len 生成多少位字符
+ */
+export function RandomString(len: number = 32): string {
+    var str = "",
+        range = len,
+        arr = ['2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+    for (var i = 0; i <= range; i++) {
+        var pos = Math.round(Math.random() * (arr.length - 1));
+        str += arr[pos];
+    }
+    return str;
+}
+
+
+/**
+ * 将url里面的参数解析出来
+ * @param url 需要解析的url
+ */
+export function QueryString(url:string):any{
+    var search = url.substring(url.lastIndexOf('?') + 1)
+    if (!search) {
+        return {}
+    }
+    return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+}

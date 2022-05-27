@@ -1,46 +1,127 @@
 const lib = {
-	//将字符串排列组合成不同的字符串    anagrams('abc') -> ['abc','acb','bac','bca','cab','cba']
+	/**
+	 * 将字符串排列组合成不同的字符串    anagrams('abc') -> ['abc','acb','bac','bca','cab','cba']
+	 * @param {*} str 
+	 * @returns 
+	 */
 	anagrams: str => {
 		if (str.length <= 2) return str.length === 2 ? [str, str[1] + str[0]] : [str];
 		return str.split('').reduce((acc, letter, i) => acc.concat(anagrams(str.slice(0, i) + str.slice(i + 1)).map(val => letter + val)), []);
 	},
 
-	//求数组的平均数     average([1,2,3]) -> 2
+	/**
+	 * 求数组的平均数     average([1,2,3]) -> 2
+	 * @param {*} arr 
+	 * @returns 
+	 */
 	average: arr => arr.reduce((acc, val) => acc + val, 0) / arr.length,
 
-	//大写每个单词的首字母    capitalizeEveryWord('hello world!') -> 'Hello World!'
+	/**
+	 * 大写每个单词的首字母    capitalizeEveryWord('hello world!') -> 'Hello World!'
+	 * @param {*} str 
+	 * @returns 
+	 */
 	capitalizeEveryWord: str => str.replace(/\b[a-z]/g, char => char.toUpperCase()),
 
-	//首字母大写		capitalize('myName', true) -> 'Myname'
+	/**
+	 * 首字母大写		capitalize('myName', true) -> 'Myname'
+	 * @param {*} str 
+	 * @param {*} lowerRest 
+	 * @returns 
+	 */
 	capitalize: (str, lowerRest = false) => str.slice(0, 1).toUpperCase() + (lowerRest ? str.slice(1).toLowerCase() : str.slice(1)),
 
-	//查看一个数在数组中出现的次数		countOccurrences([1,1,2,1,2,3], 1) -> 3
+	/**
+	 * 查看一个数在数组中出现的次数		countOccurrences([1,1,2,1,2,3], 1) -> 3
+	 * @param {*} arr 
+	 * @param {*} value 
+	 * @returns 
+	 */
 	countOccurrences: (arr, value) => arr.reduce((a, v) => v === value ? a + 1 : a + 0, 0),
 
-	//过滤数组中的非唯一值    filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+	/**
+	 * 过滤数组中的非唯一值    filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+	 * @param {*} arr 
+	 * @returns 
+	 */
 	filterNonUnique: arr => arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i)),
 
-	//获取最大公约数		gcd (8, 36) -> 4
+	/**
+	 * 获取最大公约数		gcd (8, 36) -> 4
+	 * @param {*} x 
+	 * @param {*} y 
+	 * @returns 
+	 */
 	gcd: (x, y) => !y ? x : gcd(y, x % y),
 
-	//范围内的随机整数	 randomIntegerInRange(0, 5) -> 2	
+	/**
+	 * 范围内的随机整数	 randomIntegerInRange(0, 5) -> 2
+	 * @param {*} min 
+	 * @param {*} max 
+	 * @returns 
+	 */	
 	randomIntegerInRange: (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
 
-	//范围内的随机整数      randomInRange(2,10) -> 6.0211363285087005
+	/**
+	 * 范围内的随机整数      randomInRange(2,10) -> 6.0211363285087005
+	 * @param {*} min 
+	 * @param {*} max 
+	 * @returns 
+	 */
 	randomInRange: (min, max) => Math.random() * (max - min) + min,
 
-	//随机化数组顺序     shuffle([1,2,3]) -> [2,3,1]
+	/**
+	 * 随机化数组顺序     shuffle([1,2,3]) -> [2,3,1]
+	 * @param {*} arr 
+	 * @returns 
+	 */
 	shuffle: arr => arr.sort(() => Math.random() - 0.5),
-	//按照字母顺序排列		sortCharactersInString('cabbage') -> 'aabbceg'
+	
+	/**
+	 * 按照字母顺序排列		sortCharactersInString('cabbage') -> 'aabbceg'
+	 * @param {*} str 
+	 * @returns 
+	 */
 	sortCharactersInString: str => str.split('').sort((a, b) => a.localeCompare(b)).join(''),
 
-	//求数组总和		sum([1,2,3,4]) -> 10
+	/**
+	 * 求数组总和		sum([1,2,3,4]) -> 10
+	 * @param {*} arr 
+	 * @returns 
+	 */
 	sum: arr => arr.reduce((acc, val) => acc + val, 0),
 
-	//数组去重		unique([1,2,2,3,4,4,5]) -> [1,2,3,4,5]
+	/**
+	 * 数组去重		unique([1,2,2,3,4,4,5]) -> [1,2,3,4,5]
+	 * @param {*} arr 
+	 * @returns 
+	 */
 	unique: arr => [...new Set(arr)],
 
-	//url 序列化   将参数转换成对象		getUrlParameters('http://url.com/page?name=Adam&surname=Smith') -> {name: 'Adam', surname: 'Smith'}
+	/**
+	 * url 序列化   将参数转换成对象		getUrlParameters('http://url.com/page?name=Adam&surname=Smith') -> {name: 'Adam', surname: 'Smith'}
+	 * @param {*} url 
+	 * @returns 
+	 */
 	getUrlParameters: url => url.match(/([^?=&]+)(=([^&]*))/g).reduce((a, v) => (a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1), a), {}),
 
+	/**
+	 * 对数组里面的数字进行随机排序, 常用于洗牌算法
+	 * @param {*} arr 
+	 * @returns 
+	 */
+	shuffleArray: (arr) => arr.sort(() => Math.random() - 0.5),
+	
+	/**
+	 * 生成随机颜色
+	 * @returns 
+	 */
+	rundomColor: () => '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6),
+
+	/**
+	 * 判断数据类型
+	 * @param {*} para 
+	 * @returns 
+	 */
+	type: (para) =>  Object.prototype.toString.call(para)
 }

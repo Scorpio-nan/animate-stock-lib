@@ -1060,6 +1060,32 @@ var tool = {
 		return sarr;
 	},
 
+	CombolPro: function (arr) {
+		let len = arr.length
+		let res = [] // 所有排列结果
+		/**
+		 * 【全排列算法】
+		 * 说明：arrange用来对arr中的元素进行排列组合，将排列好的各个结果存在新数组中
+		 * @param tempArr：排列好的元素
+		 * @param leftArr：待排列元素
+		 */
+		let arrange = (tempArr, leftArr) => {
+			if (tempArr.length === len) { // 这里就是递归结束的地方
+			// res.push(tempArr) // 得到全排列的每个元素都是数组
+			res.push(tempArr.join('')) // 得到全排列的每个元素都是字符串
+			} else {
+			leftArr.forEach((item, index) => {
+				let temp = [].concat(leftArr)
+				temp.splice(index, 1)
+				// 此时，第一个参数是当前分离出的元素所在数组；第二个参数temp是传入的leftArr去掉第一个后的结果
+				arrange(tempArr.concat(item), temp) // 这里使用了递归
+			})
+			}
+		}
+		arrange([], arr)
+		return res
+	},
+
 	//
 	//递归排列
 	// 从 arr[1...n] 中任选 num(0 < num <= n) 个数的所有排列
@@ -1257,6 +1283,30 @@ var tool = {
 		};
 	},
 
+
+
+	/**
+	 * param 将要转为URL参数字符串的对象
+	 * key URL参数字符串的前缀
+	 * encode true/false 是否进行URL编码,默认为true
+	 * 
+	 * return URL参数字符串
+	 */
+	urlEncode: function (param, key, encode) {
+		if(param==null) return '';
+		var paramStr = '';
+		var t = typeof (param);
+		if (t == 'string' || t == 'number' || t == 'boolean') {
+		  paramStr += '&' + key + '=' + ((encode==null||encode) ? encodeURIComponent(param) : param);
+		} else {
+		  for (var i in param) {
+			var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
+			paramStr += urlEncode(param[i], k, encode);
+		  }
+		}
+		return paramStr;
+	},
+
 	/**
 	 *
 	 * @param {*} fn
@@ -1274,6 +1324,28 @@ var tool = {
 				fn.apply(this);
 			}, delay);
 		};
+	},
+
+	/**
+	 * 金额格式化  每多少位加一个 ,
+	 * @param {*} value 需要处理的值
+	 * @param {*} num 保留的位数
+	 * @returns 
+	 */
+	formatMoney(value, num) {
+		let money = '0.00'
+		if (value) {
+		  num = num > 0 && num <= 20 ? num : 2
+		  value = `${parseFloat(`${value}`.replace(/[^\d\.-]/g, '')).toFixed(num)}`
+		  const valueArr = value.split('.')[0].split('').reverse()
+		  const valueFloat = value.split('.')[1]
+		  let valueString = ''
+		  for (let i = 0; i < valueArr.length; i++) {
+			valueString += valueArr[i] + ((i + 1) % 3 === 0 && i + 1 !== valueArr.length ? ',' : '')
+		  }
+		  money = `${valueString.split('').reverse().join('')}.${valueFloat}`
+		}
+		return money
 	}
 
 };

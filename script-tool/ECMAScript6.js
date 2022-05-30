@@ -123,5 +123,41 @@ const lib = {
 	 * @param {*} para 
 	 * @returns 
 	 */
-	type: (para) =>  Object.prototype.toString.call(para)
+	type: (para) =>  Object.prototype.toString.call(para),
+
+	/**
+	 * 将多维数组转换成 一维数组  
+	 * 	arr3 = [
+			[1, 2],
+			[3, 4],
+			[5, [7, [9, 10], 8], 6],
+		]
+		=>  [ 1, 2, 3, 4, 5, 7, 9, 10, 8, 6 ]
+	 * @param {*} arr 
+	 * @returns 
+	 */
+	flatten: arr => arr.reduce((pre,cur) => pre.concat(Array.isArray(cur) ? flatten(cur) : cur), []),
+
+
+	/**
+	 * 将数组按照 x 位分块   arr4 = [1, 2, 3, 4, 5, 6], 3   => [ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
+	 * @param {*} arr 
+	 * @param {*} size 
+	 * @returns 
+	 */
+	chunk: (arr, size) =>  arr.reduce((res, cur) => (res[res.length - 1].length < size ? res[res.length - 1].push(cur) : res.push([cur]), res),[[]] ),
+
+	
+	/**
+	 * 统计字符串中重复字符的个数  text = "划水水摸鱼鱼"  =>  { '划': 1, '水': 2, '摸': 1, '鱼': 2 }
+	 * @param {*} text 
+	 * @returns 
+	 */
+	countChar: text => {
+		text = text.split("");
+		return text.reduce((record, c) => {
+			record[c] = (record[c] || 0) + 1;
+			return record;
+		}, {});
+	},
 }

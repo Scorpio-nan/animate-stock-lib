@@ -122,6 +122,17 @@ const lib = {
 	 * 判断数据类型
 	 * @param {*} para 
 	 * @returns 
+	 *  console.log(Object.prototype.toString.call("123"))           -------->[object String]
+		console.log(Object.prototype.toString.call(123))             -------->[object Number]
+		console.log(Object.prototype.toString.call(true))            -------->[object Boolean]
+		console.log(Object.prototype.toString.call([1, 2, 3]))       -------->[object Array]
+		console.log(Object.prototype.toString.call(null))            -------->[object Null]
+		console.log(Object.prototype.toString.call(undefined))       -------->[object Undefined]
+		console.log(Object.prototype.toString.call({name: 'Hello'})) -------->[object Object]
+		console.log(Object.prototype.toString.call(function () {}))  -------->[object Function]
+		console.log(Object.prototype.toString.call(new Date()))      -------->[object Date]
+		console.log(Object.prototype.toString.call(/\d/))            -------->[object RegExp]
+		console.log(Object.prototype.toString.call(Symbol()))        -------->[object Symbol]
 	 */
 	type: (para) =>  Object.prototype.toString.call(para),
 

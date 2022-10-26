@@ -17,7 +17,6 @@ btn.onclick = function () {
 
 
 
-
 // 给inpu框录入text，并且手动触发input框的事件
 function inputValue(dom, data) {
 	var evt = new InputEvent('input', {
@@ -147,6 +146,7 @@ export const getStyle = ieVersion < 9 ? function (element, styleName) {
 	}
 };
 
+
 /* istanbul ignore next */
 export function setStyle(element, styleName, value) {
 	if (!element || !styleName) return;
@@ -166,8 +166,6 @@ export function setStyle(element, styleName, value) {
 		}
 	}
 };
-
-
 
 
 
@@ -200,9 +198,6 @@ let blobURL = window.URL.createObjectURL(blob);
 
 
 
-
-
-
 /**
  * desc: base64对象转blob文件对象
  * @param urlData  ：数据的base64对象
@@ -226,6 +221,9 @@ function base64ToBlob(urlData, type) {
 		type: mime
 	});
 }
+
+
+
 /**
  * desc: 下载导出文件
  * @param blob  ：返回数据的blob对象或链接
@@ -250,6 +248,8 @@ function downloadExportFile(blob, fileName, fileType) {
 	}
 }
 
+
+
 /**
  * desc: base64转文件并下载
  * @param base64 {String} : base64数据
@@ -265,3 +265,29 @@ function downloadFile(base64, fileName, fileType) {
 
 
 //downloadFile('你的base64数据','download','.pdf');
+
+
+
+/**
+ * 通过css检测系统的主题色从而全局修改样式
+ * @media 的属性 prefers-color-scheme就可以知道当前的系统主题，当然使用前需要查查兼容性
+ * 
+ *  @media (prefers-color-scheme: dark) { //... } 
+ *  @media (prefers-color-scheme: light) { //... }
+ * 
+ */
+// javascript也可以轻松做到
+
+window.addEventListener('theme-mode', event =>{ 
+    if(event.mode == 'dark'){}
+   	if(event.mode == 'light'){} 
+})
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { 
+    if (event.matches) {} // dark mode
+})
+
+
+
+
+

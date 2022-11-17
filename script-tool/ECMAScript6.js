@@ -171,4 +171,23 @@ const lib = {
 			return record;
 		}, {});
 	},
+
+	/**
+	 * 取数组对象的最大值的一个
+	 * [
+	 * 	  	{ value:10, key: 'aaa'},
+	 * 		{ value:2, key: 'vv'},
+	 * 		{ value:8, key: 'ccc'}
+	 * ]
+	 * @param {*} key 
+	 * @returns 
+	 * maxItem(arr, 'value')
+	 */
+	maxItem: (arr, key) => arr.reduce((prev, current) => prev[key] > current[key] ? prev : current),
+
+	/**
+	 * 设备类型, true 是 mobile, false 是 pc
+	 * @returns 
+	 */
+	isMobile: () => window.navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
 }

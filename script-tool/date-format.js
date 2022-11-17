@@ -66,3 +66,16 @@ Date.prototype.pattern = function(fmt) {
 
 // var date = new Date();
 // window.alert(date.pattern("yyyy-MM-dd hh:mm:ss"));
+
+/**
+ * 获取(前后)多少天的年月日
+ * @param {*} days 
+ * @returns 
+ */
+function dateFormat(days) {
+    var date = new Date();
+    var times = date.getTime() + (days * 24 * 60 * 60 * 1000);
+    date.setTime(times);
+    var time = (date.getMonth()+1) + "/" + date.getDate() + '/' + date.getFullYear();
+    return time;
+}

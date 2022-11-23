@@ -189,5 +189,38 @@ const lib = {
 	 * 设备类型, true 是 mobile, false 是 pc
 	 * @returns 
 	 */
-	isMobile: () => window.navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+	isMobile: () => window.navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i),
+	
+	/**
+	 * 
+	 * @param {*} data 
+	 * @returns
+	 * const list = [
+			{id: 1, name: 1, pid: -1, childrenList: [
+				{id: 7, name: 7, pid: 1, childrenList: []},
+				{id: 8, name: 8, pid: 1, childrenList: []},
+				{id: 9, name: 9, pid: 1, childrenList: []},
+			]},
+			{id: 2, name: 2, pid: -1, childrenList: [
+				{id: 3, name: 3, pid: 2, childrenList: []},
+				{id: 4, name: 4, pid: 2, childrenList: []},
+				{id: 5, name: 5, pid: 2, childrenList: []},
+				{id: 6, name: 6, pid: 2, childrenList: []},
+			]},
+		];
+		flatten(list);
+		// 下面为输出结果
+		[
+			{"id":1,"name":1,"pid":-1},
+			{"id":7,"name":7,"pid":1},
+			{"id":8,"name":8,"pid":1},
+			{"id":9,"name":9,"pid":1},
+			{"id":2,"name":2,"pid":-1},
+			{"id":3,"name":3,"pid":2},
+			{"id":4,"name":4,"pid":2},
+			{"id":5,"name":5,"pid":2},
+			{"id":6,"name":6,"pid":2}
+		] 
+	 */
+	flattenReduce: (data)=> data.reduce((arr, {id, name, pid, childrenList = []})=> arr.concat([{id, name, pid}], flatten(childrenList)), []),
 }

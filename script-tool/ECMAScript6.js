@@ -223,4 +223,49 @@ const lib = {
 		] 
 	 */
 	flattenReduce: (data)=> data.reduce((arr, {id, name, pid, childrenList = []})=> arr.concat([{id, name, pid}], flatten(childrenList)), []),
+
+	
+	/**
+	 * 快速创建序列 (指定范围和步长)
+	 * range(0, 4, 1);
+	 * [0, 1, 2, 3, 4]
+	 */
+	range: (start, stop, step) => Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step)),
+
+	/**
+	 * 全排列
+	 * permute('abc')
+	 * [ 'abc', 'acb', 'bac', 'bca', 'cab', 'cba' ]
+	 * 
+	 * @param {*} string 
+	 * @returns 
+	 */
+	permute: string => {
+		const result = []
+		const map = new Map()
+		const dfs = (path) => {
+			if (path.length === string.length) {
+				result.push(path)
+				return
+			}
+			for (let i = 0; i < string.length; i++) {
+				if (map.get(string[i])) continue
+				map.set(string[i], true)
+				path += string[i]
+				dfs(path)
+				path = path.substring(0, path.length - 1)
+				map.set(string[i], false)
+			}
+		}
+		dfs('')
+		return result
+	},
+
+	/**
+	 * 判断对象上面是否有某个属性
+	 * @param {*} obj 
+	 * @param {*} element 
+	 * @returns 
+	 */
+	has: (obj, element) => Object.prototype.hasOwnProperty.call(obj, element)
 }

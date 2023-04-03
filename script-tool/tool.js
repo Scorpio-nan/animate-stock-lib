@@ -610,6 +610,17 @@ var tool = {
 		}
 		return str;
 	},
+	// 随机生成多少位内的 uuid
+	uuid: function(min, max) {
+		var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+		var str = '';
+		var range = Math.round(Math.random() * (max - min)) + min;
+		for (var i = 0; i < range; i++) {
+			var pos = Math.round(Math.random() * (ORIGINAL.length - 1));
+			str += ORIGINAL[pos];
+		}
+		return str;
+	},
 	//获取本周，上周，本月，上月时间   依赖makedate（）
 	querySubmit(timer) {
 		var Today = new Date();

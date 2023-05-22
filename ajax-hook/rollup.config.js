@@ -7,14 +7,25 @@ export default {
 	output: [
 		{
 			format: 'umd',
-			name: 'file',
+			name: 'library',
 			file: 'dist/ajax.intercept.umd.min.js',
             plugins: [terser()]
 		},
         {
             format: 'umd',
-			name: 'file',
+			name: 'library',
 			file: 'dist/ajax.intercept.umd.js'
+        },
+        {
+            format: 'iife',
+            name: 'library',
+            file: 'dist/ajax.interceptor.iife.min.js',
+            plugins: [terser()]
+        },
+        {
+            format: 'iife',
+            name: 'library',
+            file: 'dist/ajax.interceptor.iife.js',
         }
 	],
     plugins: [

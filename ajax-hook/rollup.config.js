@@ -9,12 +9,14 @@ export default {
 			format: 'umd',
 			name: 'library',
 			file: 'dist/ajax.intercept.umd.min.js',
-            plugins: [terser()]
+            plugins: [terser()],
+            globals: { 'library': 'RequestIntercept' }
 		},
         {
             format: 'umd',
 			name: 'library',
-			file: 'dist/ajax.intercept.umd.js'
+			file: 'dist/ajax.intercept.umd.js',
+            globals: { 'library': 'RequestIntercept' }
         },
         {
             format: 'iife',

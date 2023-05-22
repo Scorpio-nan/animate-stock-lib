@@ -1,11 +1,10 @@
-1
 /* 封装ajax函数
-2  * @param {string}opt.type http连接的方式，包括POST和GET两种方式
-3  * @param {string}opt.url 发送请求的url
-4  * @param {boolean}opt.async 是否为异步请求，true为异步的，false为同步的
-5  * @param {object}opt.data 发送的参数，格式为对象类型
-6  * @param {function}opt.success ajax发送并接收成功调用的回调函数
-7  */
+* @param {string}opt.type http连接的方式，包括POST和GET两种方式
+* @param {string}opt.url 发送请求的url
+* @param {boolean}opt.async 是否为异步请求，true为异步的，false为同步的
+* @param {object}opt.data 发送的参数，格式为对象类型
+* @param {function}opt.success ajax发送并接收成功调用的回调函数
+*/
 function ajax(opt) {
 	opt = opt || {};
 	opt.method = opt.method.toUpperCase() || 'POST';

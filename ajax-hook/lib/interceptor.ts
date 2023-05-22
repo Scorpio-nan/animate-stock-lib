@@ -74,7 +74,7 @@ export default class RequestIntercept {
         /**
          * 如果一个都没有命中, 那就不管了;
          */
-        if (matchers.length && !matchers.some(ele => ele.match(data.url))) return;
+        if (matchers.length && !matchers.some(ele => data.url.match(ele))) return;
     
         this.ajax(data);
     }

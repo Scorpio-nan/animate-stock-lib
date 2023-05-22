@@ -4,7 +4,7 @@ export default class RequestIntercept {
     /**
      * 项目配置
      */
-    private static config: InitConfig;
+    public static config: InitConfig;
 
     /**
      * 当前上报的 uri 配置
@@ -23,11 +23,12 @@ export default class RequestIntercept {
     /**
      * 初始化 http 拦截器
      */
-    ready() {
+    private ready() {
         
         const originalOpen = XMLHttpRequest.prototype.open;
         const originalSend = XMLHttpRequest.prototype.send;
         const setHeader = XMLHttpRequest.prototype.setRequestHeader;
+        const self = this;
 
         var headers = {};
 
@@ -48,6 +49,13 @@ export default class RequestIntercept {
                 console.log('%c Request', 'font-size: 20px; color: #17a2b8;', this._url + ' method ' + this._method + ' with data ' + data);
                 console.log('%c Headers', 'font-size: 20px; color: #dc3545;', headers);
                 console.log('%c getAllResponseHeaders', 'font-size: 20px; color: #007bff;', this.getAllResponseHeaders());
+                
+                self.send({
+                    headers: headers,
+                    method: this._method,
+                    url: this._url,
+                    data: data || {}
+                })
             })
 
             return originalSend.apply(this, arguments);
@@ -57,10 +65,38 @@ export default class RequestIntercept {
 
     /**
      * 拦截结果发送到服务端, 包含 request, response
+     * 通过配置里面的 matcher 来判定哪些是需要进行拦截的, 哪些是不需要的
      */
-    send() {
+    private send(data) {
+        
+        const matchers = RequestIntercept.config.matcher;
 
+        /**
+         * 如果一个都没有命中, 那就不管了;
+         */
+        if (matchers.length && !matchers.some(ele => ele.match(data.url))) return;
+    
+        this.ajax(data);
+    }
+
+    /**
+     * 简单的封装一个 ajax 用来发送
+     */
+    private ajax (data) {
+        return new Promise((resolve, reject) => {
+            fetch(this.selfConfig.uri, {
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST'
+            }).then(res => {
+                res.json().then(result => {
+                    resolve(result);
+                })
+            })
+        })
     }
 }
 
-new RequestIntercept({ project: 'name', matcher: [''] })
+// new RequestIntercept({ project: 'name', matcher: [''] })

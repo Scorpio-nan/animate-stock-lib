@@ -3,20 +3,20 @@ import { terser } from "rollup-plugin-terser";
 import TypescriptPlugin from '@rollup/plugin-typescript';
 
 export default {
-	input: 'lib/interceptor.ts',
+	input: 'lib/adapter.ts',
 	output: [
 		{
 			format: 'umd',
 			name: 'library',
 			file: 'dist/ajax.intercept.umd.min.js',
             plugins: [terser()],
-            globals: { 'library': 'RequestIntercept' }
+            globals: { 'library': 'AjaxAdapter' }
 		},
         {
             format: 'umd',
 			name: 'library',
 			file: 'dist/ajax.intercept.umd.js',
-            globals: { 'library': 'RequestIntercept' }
+            globals: { 'library': 'AjaxAdapter' }
         },
         {
             format: 'iife',

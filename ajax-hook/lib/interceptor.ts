@@ -1,5 +1,5 @@
 import { InitConfig } from './types';
-import { queryString } from './utils';
+import { queryString, headerStruct, responseStruct, paramsStruct } from './utils';
 
 export default class RequestIntercept {
     /**
@@ -52,6 +52,16 @@ export default class RequestIntercept {
                 console.log('%c Request', 'font-size: 20px; color: #17a2b8;', this._url + ' method ' + this._method + ' with data ' + data);
                 console.log('%c Headers', 'font-size: 20px; color: #dc3545;', headers);
                 console.log('%c getAllResponseHeaders', 'font-size: 20px; color: #007bff;', this.getAllResponseHeaders());
+                
+                const isGet = this._method.toLocaleLowerCase() == 'get';
+                const requestParams = isGet ? queryString(this.url) : data;
+                let response = {};
+
+                try {
+                    response = JSON.parse(this.responseText);
+                } catch (error) {
+                    response = this.responseText
+                }
 
                 const params = {
                     title: RequestIntercept.config.project + 'Fetch In Website',
@@ -60,7 +70,9 @@ export default class RequestIntercept {
                     contentType: headers['Content-Type'],
                     url: this._url,
                     status: 'done',
-                    requestHeaders: {}
+                    requestHeaders: headerStruct(headers),
+                    requestParams: paramsStruct(requestParams),
+                    response: responseStruct(response)
                 }
 
                 self.send({

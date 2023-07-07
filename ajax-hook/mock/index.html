@@ -126,6 +126,80 @@
         // console.log(convertToObject(ast));
         console.log(convertToMock(ast));
 
+        const params = result.requestParams;
+        const response = result.response;
+
+        function convertObject(children) {
+            const obj = {};
+            children.forEach(child => {
+                if (child.type === 'number' || child.type === 'string') {
+                    var type = child.type;
+                    var val = '';
+                    if (type == 'number') {
+                        val = Random.integer(1, 20);
+                    } else if (type == 'string') {
+                        val = Random.string();
+                    }
+                    obj[child.name] = val;
+                } else if (child.type === 'object') {
+                    obj[child.name] = convertObject(child.children);
+                } else if (child.type === 'array') {
+                    obj[child.name] = convertArray(child.children);
+                }
+            });
+            return obj;
+        }
+
+        function convertArray(children) {
+            const arr = [];
+            children.forEach(child => {
+                const obj = {};
+                if (child.type === 'number' || child.type === 'string') {
+                    var type = child.type;
+                    var val = '';
+                    if (type == 'number') {
+                        val = Random.integer(1, 20);
+                    } else if (type == 'string') {
+                        val = Random.string();
+                    }
+                    obj[child.name] = val;
+                } else if (child.type === 'object') {
+                    obj[child.name] = convertObject(child.children);
+                }
+                arr.push(obj);
+            });
+            return arr;
+        }
+
+        function reverseParams(params) {
+            var obj = {};
+            for (let i in params) {
+                const item = params[i];
+                if (item.type == 'object') {
+                    obj[item.name] = convertObject(item.children);
+                } else if (item.type == 'array') {
+                    obj[item.name] = convertArray(item.children);
+                } else {
+                    var type = item.type;
+                    var val = '';
+                    if (type == 'number') {
+                        val = Random.integer(1, 20);
+                    } else if (type == 'string') {
+                        val = Random.string();
+                    }
+                    obj[item.name] = val;
+                }
+            }
+            return obj;
+        }
+
+
+        // console.log(params, '==')
+        // console.log(response, 'response')
+
+        console.log(reverseParams(params));
+        console.log(reverseParams(response));
+
     </script>
 </body>
 

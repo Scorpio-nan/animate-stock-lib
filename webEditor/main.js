@@ -1,13 +1,19 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { language as sqlLanguage } from 'monaco-editor/esm/vs/basic-languages/sql/sql';
 
+
 (function () {
     const div = document.createElement('div');
     div.id = 'root';
     div.style = 'width:100%; height:600px;';
 
     document.body.appendChild(div);
+
+
+    document.getElementById('query-btn').onclick = search
+
 })();
+
 
 monaco.languages.registerCompletionItemProvider('sql', {
     provideCompletionItems: (
@@ -44,9 +50,28 @@ monaco.languages.registerCompletionItemProvider('sql', {
     }
 })
 
-monaco.editor.create(document.getElementById('root'), {
+const editor = monaco.editor.create(document.getElementById('root'), {
     value: `SELECT * FROM res_users`,
     language: 'sql',
     theme: 'vs',
     codeLens: true,
 });
+
+
+
+function search() {
+    console.log(editor.getValue());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

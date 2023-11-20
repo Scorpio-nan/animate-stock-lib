@@ -4,8 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "webpack serve --NODE_ENV='development'",
-    "build": "webpack --NODE_ENV='production'"
+    "dev": "webpack serve --config webpack.config.js",
+    "build": "webpack --config webpack.build.config.js"
   },
   "keywords": [],
   "author": "",

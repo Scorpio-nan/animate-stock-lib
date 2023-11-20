@@ -3,7 +3,7 @@ import { terser } from "rollup-plugin-terser";
 import TypescriptPlugin from '@rollup/plugin-typescript';
 
 export default {
-	input: 'lib/adapter.ts',
+	input: 'lib/interceptor.ts',
 	output: [
 		{
 			format: 'umd',

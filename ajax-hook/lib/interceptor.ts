@@ -1,4 +1,5 @@
 import { InitConfig } from './types';
+import { queryString, headerStruct, responseStruct, paramsStruct } from './utils';
 
 export default class RequestIntercept {
     /**
@@ -46,10 +47,34 @@ export default class RequestIntercept {
         XMLHttpRequest.prototype.send = function(data) {
 
             this.addEventListener('load', function() {
+                console.log(this, '==')
+                // this.responseText 是返回值
                 console.log('%c Request', 'font-size: 20px; color: #17a2b8;', this._url + ' method ' + this._method + ' with data ' + data);
                 console.log('%c Headers', 'font-size: 20px; color: #dc3545;', headers);
                 console.log('%c getAllResponseHeaders', 'font-size: 20px; color: #007bff;', this.getAllResponseHeaders());
                 
+                const isGet = this._method.toLocaleLowerCase() == 'get';
+                const requestParams = isGet ? queryString(this.url) : data;
+                let response = {};
+
+                try {
+                    response = JSON.parse(this.responseText);
+                } catch (error) {
+                    response = this.responseText
+                }
+
+                const params = {
+                    title: RequestIntercept.config.project + 'Fetch In Website',
+                    description: '',
+                    method: this._method,
+                    contentType: headers['Content-Type'],
+                    url: this._url,
+                    status: 'done',
+                    requestHeaders: headerStruct(headers),
+                    requestParams: paramsStruct(requestParams),
+                    response: responseStruct(response)
+                }
+
                 self.send({
                     headers: headers,
                     method: this._method,
@@ -61,7 +86,8 @@ export default class RequestIntercept {
             return originalSend.apply(this, arguments);
         }
 
-    }   
+    }  
+    
 
     /**
      * 拦截结果发送到服务端, 包含 request, response
@@ -74,9 +100,9 @@ export default class RequestIntercept {
         /**
          * 如果一个都没有命中, 那就不管了;
          */
-        if (matchers.length && !matchers.some(ele => data.url.match(ele))) return;
+        // if (matchers.length && !matchers.some(ele => data.url.match(ele))) return;
     
-        this.ajax(data);
+        // this.ajax(data);
     }
 
     /**
@@ -99,4 +125,4 @@ export default class RequestIntercept {
     }
 }
 
-// new RequestIntercept({ project: 'name', matcher: [''] })
+new RequestIntercept({ project: 'Api接口文档', matcher: [''] })

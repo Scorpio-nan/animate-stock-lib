@@ -1,0 +1,28 @@
+{
+  "name": "webeditor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "webpack serve --NODE_ENV='development'",
+    "build": "webpack --NODE_ENV='production'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@webpack-cli/serve": "^2.0.5",
+    "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "monaco-editor-webpack-plugin": "^7.1.0",
+    "style-loader": "^3.3.3",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "monaco-editor": "^0.44.0"
+  }
+}

@@ -95,5 +95,3 @@ export default class AjaxAdapter extends XMLHttpRequest {
 
 new AjaxAdapter({ project: '测试一下', matcher: [] });
 
-
-

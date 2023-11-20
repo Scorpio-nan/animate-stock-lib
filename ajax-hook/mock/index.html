@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./mock.js"></script>
+    <script src="./json2ast.js"></script>
+    <script>
+        const { Random } = Mock;
+
+        // const data = Mock.mock({
+        //     'code': '0',
+        //     'msg': '@string(5)',
+        //     'list|2': [
+        //         {
+        //             'id|+1': 1,
+        //             'name': '@cname',
+        //             'address': '@county(true)',
+        //             'zip': '@zip'
+        //         }
+        //     ],
+        //     'result|2': ['AMC', 1, 3]
+        // })
+
+        const data = Mock.mock({
+            'code': '0',
+            'msg': '@string(5)',
+            'list|2': [
+                {
+                    'id|+1': 1,
+                    'name': '@cname',
+                    'address': '@county(true)',
+                    'children': [
+                        {
+                            'uuid': '@guid',
+                            'ip': '@ip',
+                            'email': '@email',
+                            'url': '@url'
+                        }
+                    ]
+                }
+            ],
+            'result|2': ['AMC', 1, 3]
+        })
+
+        const ast = jsonToAst(JSON.stringify(data), { loc: false });
+
+        console.log('data:', data);
+        console.log('ast:', ast);
+
+        /**
+         * 数据类型
+         */
+        function typeOf(param) {
+            const str = Object.prototype.toString.call(param);
+            return str.slice(8, str.length - 1).toLocaleLowerCase();
+        }
+
+        /**
+         * 递归将数据类型解析出来
+         * Object: object
+         * Property: object
+         * Identifier: string;
+         * Array: array;
+         * Literal: string | number | boolean | null;
+         */
+         function convertToObject(data) {
+            if (data.type === "Object") {
+                let obj = {};
+                data.children.forEach((child) => {
+                    if (child.type === "Property") {
+                        let key = child.key.value;
+                        let value = convertToObject(child.value);
+                        obj[key] = value;
+                    }
+                });
+                return obj;
+            } else if (data.type === "Array") {
+                let arr = [];
+                data.children.forEach((child) => {
+                    if (child.type === "Object") {
+                        let obj = convertToObject(child);
+                        arr.push(obj);
+                    } else if (child.type === "Literal" || child.type === 'Identifier') {
+                        arr.push(child.value);
+                    }
+                });
+                return arr;
+            } else if (data.type === "Literal" || child.type === 'Identifier') {
+                return data.value;
+            }
+        }
+
+        function convertToMock(data) {
+            if (data.type === "Object") {
+                let obj = {};
+                data.children.forEach((child) => {
+                    if (child.type === "Property") {
+                        let key = child.key.value;
+                        let value = convertToMock(child.value);
+                        obj[key] = value;
+                    }
+                });
+                return obj;
+            } else if (data.type === "Array") {
+                let arr = [];
+                data.children.forEach((child) => {
+                    if (child.type === "Object") {
+                        let obj = convertToMock(child);
+                        arr.push(obj);
+                    } else if (child.type === "Literal" || child.type === 'Identifier') {
+                        arr.push(child.value);
+                    }
+                });
+                return arr;
+            } else if (data.type === "Literal" || child.type === 'Identifier') {
+                return data.value;
+            }
+        }
+
+        // console.log(convertToObject(ast));
+        console.log(convertToMock(ast));
+
+        const params = result.requestParams;
+        const response = result.response;
+
+        function convertObject(children) {
+            const obj = {};
+            children.forEach(child => {
+                if (child.type === 'number' || child.type === 'string') {
+                    var type = child.type;
+                    var val = '';
+                    if (type == 'number') {
+                        val = Random.integer(1, 20);
+                    } else if (type == 'string') {
+                        val = Random.string();
+                    }
+                    obj[child.name] = val;
+                } else if (child.type === 'object') {
+                    obj[child.name] = convertObject(child.children);
+                } else if (child.type === 'array') {
+                    obj[child.name] = convertArray(child.children);
+                }
+            });
+            return obj;
+        }
+
+        function convertArray(children) {
+            const arr = [];
+            children.forEach(child => {
+                const obj = {};
+                if (child.type === 'number' || child.type === 'string') {
+                    var type = child.type;
+                    var val = '';
+                    if (type == 'number') {
+                        val = Random.integer(1, 20);
+                    } else if (type == 'string') {
+                        val = Random.string();
+                    }
+                    obj[child.name] = val;
+                } else if (child.type === 'object') {
+                    obj[child.name] = convertObject(child.children);
+                }
+                arr.push(obj);
+            });
+            return arr;
+        }
+
+        function reverseParams(params) {
+            var obj = {};
+            for (let i in params) {
+                const item = params[i];
+                if (item.type == 'object') {
+                    obj[item.name] = convertObject(item.children);
+                } else if (item.type == 'array') {
+                    obj[item.name] = convertArray(item.children);
+                } else {
+                    var type = item.type;
+                    var val = '';
+                    if (type == 'number') {
+                        val = Random.integer(1, 20);
+                    } else if (type == 'string') {
+                        val = Random.string();
+                    }
+                    obj[item.name] = val;
+                }
+            }
+            return obj;
+        }
+
+
+        // console.log(params, '==')
+        // console.log(response, 'response')
+
+        console.log(reverseParams(params));
+        console.log(reverseParams(response));
+
+    </script>
+</body>
+
+</html>

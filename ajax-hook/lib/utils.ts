@@ -136,6 +136,7 @@ export function responseStruct(response: any, arr:any[] = []) {
             name: i,
             remark: '',
             demo: isObj ? '' : response[i],
+            required: false,
             type: typeOf(response[i]),
             key: uuid(16, 22)
         }

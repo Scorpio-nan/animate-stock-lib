@@ -1,9 +1,11 @@
 const path = require('path');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { StructureDonePlugin } = require('./DefineWebpackPlugins');
+const webpack = require('webpack');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './umd.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -27,6 +29,12 @@ module.exports = {
         ]
     },
     plugins: [
+        /**
+         * 去掉打包的 LICENSE
+         */
+        new webpack.IgnorePlugin({
+            resourceRegExp: /LICENSE\.txt$/
+        }),
         new MonacoWebpackPlugin({
             languages: ['typescript', 'sql', 'javascript', 'css']
         }),
@@ -34,7 +42,8 @@ module.exports = {
             title: 'html模板输出',
             filename: 'index.html',
             template: './index.html'
-        })
+        }),
+        new StructureDonePlugin()
     ],
     devServer: {
         port: 3008,

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="monaco-container" style="width:100%; height:300px;"></div>
+    <script src="dist/main.bundle.js"></script>
+    <script>
+        const { monaco, sqlLanguage } = MoEditor;
+        monaco.languages.registerCompletionItemProvider('sql', {
+            provideCompletionItems: (
+                model,
+                position
+            ) => {
+                let suggestions = []
+                const { lineNumber, column } = position
+                const textBeforePointer = model.getValueInRange({
+                    startLineNumber: lineNumber,
+                    startColumn: 0,
+                    endLineNumber: lineNumber,
+                    endColumn: column,
+                })
+                const contents = textBeforePointer.trim().split(/\s+/)
+                const lastContents = contents[contents?.length - 1]
+                if (lastContents) {
+                    const sqlConfigKey = ['builtinFunctions', 'keywords', 'operators']
+                    sqlConfigKey.forEach(key => {
+                        sqlLanguage[key].forEach(sql => {
+                            suggestions.push(
+                                {
+                                    label: sql,
+                                    insertText: sql,
+                                }
+                            )
+                        })
+
+                    })
+                }
+                return {
+                    suggestions,
+                }
+            }
+        })
+
+        const editor = monaco.editor.create(document.getElementById('monaco-container'), {
+            value: `SELECT * FROM res_users`,
+            language: 'sql',
+            theme: 'vs-dark'
+        });
+
+    </script>
+</body>
+</html>
